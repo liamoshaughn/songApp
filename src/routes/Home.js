@@ -21,7 +21,7 @@ function Home() {
   const store = useStore();
 
   async function addTracks(song) {
-    const response = "add track I guess"
+    const response = song.uri
     console.log(response);
   }
 
