@@ -4,8 +4,6 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import Home from "./routes/Home";
-import List from "./routes/List";
-import UserAdd from "./routes/UserAdd";
 import reportWebVitals from "./reportWebVitals";
 import Header from "./components/Header";
 
@@ -17,8 +15,6 @@ root.render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/auth/callback" element={<Home />}></Route>
-        <Route path="/list" element={<List />} />
-        <Route path="/spotifyAdd" element={<UserAdd />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
