@@ -125,3 +125,15 @@ export const searchBarSong = async (data, token) => {
   });
   return response.data;
 };
+
+export const sendMessage = (message) => {
+  console.log(message);
+  axiosInst
+    .post(`/request-song`, { message })
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};

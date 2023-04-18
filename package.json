@@ -2,7 +2,7 @@
   "name": "spotify-remix",
   "version": "0.1.0",
   "private": true,
-  "url": "http://localhost:3000",
+  "url": "http://localhost:3001",
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
@@ -27,7 +27,7 @@
     "zustand": "^4.3.6"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
