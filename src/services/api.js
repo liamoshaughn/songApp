@@ -2,9 +2,13 @@ import axios from "axios";
 import { redirect } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { addToken, useStore } from "../store/store";
+import { Buffer } from "buffer";
 
 const cookies = new Cookies();
 export const axiosInst = axios.create({ baseURL: "http://localhost:3005" });
+
+var spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
+var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 
 export const getToken = async () => {
   console.log("getting token");
@@ -126,14 +130,39 @@ export const searchBarSong = async (data, token) => {
   return response.data;
 };
 
-export const sendMessage = (message) => {
+export const sendMessage = async (message) => {
   console.log(message);
-  axiosInst
-    .post(`/request-song`, { message })
-    .then((response) => {
-      console.log(response.data);
+  // Call the Firebase Function using Axios
+  const response = await axios
+    .post("https://australia-southeast1-songapp-384011.cloudfunctions.net/addMessage", {
+      data: message,
     })
-    .catch((error) => {
-      console.error(error);
+    .catch(function (error) {
+      console.log(error);
     });
+
+  return response;
+};
+
+export const getClientAuth = async () => {
+  const spotify_client_id = "5a6369619e834e6fba2caaeca458f030";
+  const spotify_client_secret = "51617b77f471429399dcaba5cbdd0097";
+  const authOptions = {
+    url: "https://accounts.spotify.com/api/token",
+    method: "post",
+
+    headers: {
+      Authorization: "Basic " + Buffer.from(spotify_client_id + ":" + spotify_client_secret).toString("base64"),
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    data: {
+      grant_type: "client_credentials",
+    },
+  };
+
+  const response = await axios(authOptions).catch((error) => {
+    console.log(error);
+  });
+
+  return response.data.access_token;
 };
