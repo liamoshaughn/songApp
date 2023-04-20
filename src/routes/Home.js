@@ -8,6 +8,7 @@ import Cookies from "universal-cookie";
 import { addToken, addUser, useStore } from "../store/store";
 import { callback, getUser } from "../services/api";
 import SongSearch from "../components/UserAdd/SongSearch";
+import { ClientComponent } from "../components/helpers/sendData";
 
 async function getUserProfile(token) {
   const request = await getUser(token);
@@ -21,7 +22,7 @@ function Home() {
   const store = useStore();
 
   async function addTracks(song) {
-    const response = song.uri
+    const response = song.uri;
     console.log(response);
   }
 
@@ -36,6 +37,7 @@ function Home() {
 
   return (
     <Container>
+      <ClientComponent />
       <Typography variant="h4">Request songs for PARTY NAME</Typography>
       <SongSearch addTracks={(song) => addTracks(song)} />
     </Container>
