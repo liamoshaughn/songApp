@@ -17,8 +17,6 @@ export default function SongSearch({ addTracks }) {
     setRows(response.tracks.items);
   }
 
-  console.log(rows)
-
   return (
     <Grid container>
       <Grid item xs={12}>
