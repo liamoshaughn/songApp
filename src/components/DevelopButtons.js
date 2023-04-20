@@ -9,7 +9,7 @@ export default function DevelopButtons() {
 
   return (
     <div>
-      <Spotify />
+      {/* <Spotify /> */}
       <ClientComponent />
     </div>
   );
