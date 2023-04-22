@@ -6,16 +6,14 @@ import "./index.css";
 import Home from "./routes/Home";
 import reportWebVitals from "./reportWebVitals";
 import Header from "./components/Header";
+import App from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/auth/callback" element={<Home />}></Route>
-      </Routes>
+      <App />
     </BrowserRouter>
   </React.StrictMode>
 );

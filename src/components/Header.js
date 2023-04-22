@@ -17,14 +17,14 @@ export default function Header() {
     getToken();
   }, []);
   return (
-    <Container maxWidth="100%" sx={{ borderBottom: 1, height: "40px" }}>
-      <Button
+    <Container maxWidth="100%" sx={{ height: "40px" }}>
+      {/* <Button
         onClick={() => {
           navigate("/");
         }}
       >
         Back
-      </Button>
+      </Button> */}
     </Container>
   );
 }

@@ -18,9 +18,10 @@ export default function SongSearch({ addTracks }) {
   }
 
   return (
-    <Grid container>
+    <Grid container spacing={2} maxWidth={"500px"} width={"75vw"}>
       <Grid item xs={12}>
         <TextField
+          placeholder="Search for a song"
           onChange={(event) => searchSong(event.target.value)}
           InputProps={{
             startAdornment: (
@@ -35,12 +36,16 @@ export default function SongSearch({ addTracks }) {
       {rows.map((song) => {
         return (
           <>
-            <Grid item xs={4}>
-              <img style={{ maxWidth: "100px" }} alt="Album Cover" src={song.album.images[1].url} />
+            <Grid item xs={3}>
+              <img style={{ maxWidth: "100%" }} alt="Album Cover" src={song.album.images[1].url} />
             </Grid>
-            <Grid item xs={6}>
-              <Typography>{song.name}</Typography>
-              <Typography>
+            <Grid
+              item
+              xs={7}
+              sx={{ display: "flex", justifyContent: "center", flexDirection: "column", textAlign: "left" }}
+            >
+              <Typography sx={{ typography: { sm: "body1", xs: "body2" } }}>{song.name}</Typography>
+              <Typography sx={{ typography: { sm: "body1", xs: "body2" } }}>
                 {song.artists
                   .map((artist) => {
                     return artist.name;
@@ -48,8 +53,8 @@ export default function SongSearch({ addTracks }) {
                   .join(", ")}
               </Typography>
             </Grid>
-            <Grid item xs={2}>
-              <Button variant="contained" size="small" onClick={() => addTracks(song)}>
+            <Grid item xs={2} sx={{ display: "flex", alignItems: "center" }}>
+              <Button variant="contained" sx={{ height: "40px" }} size="small" onClick={() => addTracks(song)}>
                 +
               </Button>
             </Grid>
