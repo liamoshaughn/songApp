@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useStore, addToken, addUser } from "../../store/store";
-import { login, getToken, callback, getUser } from "../../services/api";
+
 // import spotifyData from "../../data/spotifyData.json";
 // import djData from "../../data/songData.json";
 
@@ -71,12 +71,10 @@ export default function Spotify() {
   // }
 
   return (
-    <div>
-    </div>
-  //     <LoginButton />
+    <div></div>
+    //     <LoginButton />
 
-  //     <button onClick={() => songMatch()}>find spotify matches</button>
-
+    //     <button onClick={() => songMatch()}>find spotify matches</button>
   );
 }
 
