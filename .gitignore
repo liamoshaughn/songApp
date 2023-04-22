@@ -50,3 +50,6 @@ Thumbs.db
 
 # Environment file
 .env
+
+#build files
+build/
