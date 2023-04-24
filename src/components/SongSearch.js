@@ -26,7 +26,6 @@ export default function SongSearch() {
     //sendMessage(song);
     var temp = [...butt];
     temp[index] = "✓"
-    console.log(temp)
     setButt(temp);
   }
 
