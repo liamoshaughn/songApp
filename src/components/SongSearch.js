@@ -12,15 +12,22 @@ import { sendMessage } from "../services/api";
 export default function SongSearch() {
   const store = useStore();
   const [rows, setRows] = useState([]);
+  const [butt, setButt] = useState([]);
 
   async function searchSong(song) {
     const response = await searchBarSong(song, store.accessToken);
     setRows(response.tracks.items);
+    var temp = Array(rows.length).fill("+");
+    setButt(temp);
   }
 
-  function addTracks(song) {
+  function addTracks(song, index) {
     //add login here
     //sendMessage(song);
+    var temp = [...butt];
+    temp[index] = "✓"
+    console.log(temp)
+    setButt(temp);
   }
 
   return (
@@ -39,7 +46,7 @@ export default function SongSearch() {
         ></TextField>
       </Grid>
 
-      {rows.map((song) => {
+      {rows.map((song, index) => {
         return (
           <>
             <Grid item xs={3}>
@@ -60,8 +67,8 @@ export default function SongSearch() {
               </Typography>
             </Grid>
             <Grid item xs={2} sx={{ display: "flex", alignItems: "center" }}>
-              <Button variant="contained" sx={{ height: "40px" }} size="small" onClick={() => addTracks(song)}>
-                +
+              <Button variant="contained" sx={{ height: "40px" }} size="small" onClick={() => addTracks(song, index)}>
+                {butt[index]}
               </Button>
             </Grid>
           </>
