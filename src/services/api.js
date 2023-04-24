@@ -100,6 +100,7 @@ export const sendMessage = async (message) => {
     .catch(function (error) {
       console.log(error);
     });
+  console.log(response.status)
   return response;
 };
 

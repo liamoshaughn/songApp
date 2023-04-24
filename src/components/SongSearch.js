@@ -24,24 +24,38 @@ export default function SongSearch() {
     setButtcol(temp)
   }
 
-  function buttonCheck(index) {
-    temp = [...buttcol];
-    temp[index] = "lightgreen";
-    setButtcol(temp);
-    var temp = [...butt];
-    temp[index] = "✓";
-    setButt(temp);
+  function buttonCheck(index, test) {
+    if (test) {
+      temp = [...buttcol];
+      temp[index] = "lightgreen";
+      setButtcol(temp);
+      var temp = [...butt];
+      temp[index] = "✓";
+      setButt(temp);
+    } else {
+      temp = [...buttcol];
+      temp[index] = "red";
+      setButtcol(temp);
+      var temp = [...butt];
+      temp[index] = "↺";
+      setButt(temp);
+    }
   }
 
-  function addTracks(song, index) {
+  async function addTracks(song, index) {
     if (butt[index] == "✓") {
       console.log("This button has been already pressed")
     }
     else {
       //add login here
-      //sendMessage(song);
-      //need conditional statements based on response
-      buttonCheck(index)
+      var response = await sendMessage(song);
+      console.log("printing status")
+      console.log(response.status)
+      if (response.status == 200) {
+        buttonCheck(index, 1)
+      } else {
+        buttonCheck(index, 0)
+      }
     }
   }
 
