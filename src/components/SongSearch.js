@@ -8,13 +8,19 @@ import { searchBarSong } from "../services/api";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { useStore } from "../store/store";
 
-export default function SongSearch({ addTracks }) {
+import { sendMessage } from "../services/api";
+export default function SongSearch() {
   const store = useStore();
   const [rows, setRows] = useState([]);
 
   async function searchSong(song) {
     const response = await searchBarSong(song, store.accessToken);
     setRows(response.tracks.items);
+  }
+
+  function addTracks(song) {
+    //add login here
+    sendMessage(song);
   }
 
   return (
