@@ -25,25 +25,26 @@ export default function SongSearch() {
   }
 
   function buttonCheck(index, test) {
+    var temp;
     if (test) {
       temp = [...buttcol];
       temp[index] = "lightgreen";
       setButtcol(temp);
-      var temp = [...butt];
+      temp = [...butt];
       temp[index] = "✓";
       setButt(temp);
     } else {
       temp = [...buttcol];
-      temp[index] = "red";
+      temp[index] = "lightcoral";
       setButtcol(temp);
-      var temp = [...butt];
+      temp = [...butt];
       temp[index] = "↺";
       setButt(temp);
     }
   }
 
   async function addTracks(song, index) {
-    if (butt[index] == "✓") {
+    if (butt[index] === "✓") {
       console.log("This button has been already pressed")
     }
     else {
@@ -51,7 +52,7 @@ export default function SongSearch() {
       var response = await sendMessage(song);
       console.log("printing status")
       console.log(response.status)
-      if (response.status == 200) {
+      if (response.status === 200) {
         buttonCheck(index, 1)
       } else {
         buttonCheck(index, 0)
