@@ -1,10 +1,13 @@
 import React from "react";
 
+import { Grid, Button, TextField } from "@mui/material";
 import { Typography, Container } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import SongSearch from "../components/SongSearch";
+import { Navigate, useNavigate } from "react-router-dom";
+
 
 function Home() {
+  const navigate = useNavigate();
   const theme = useTheme();
   console.log(theme);
   return (
@@ -16,9 +19,13 @@ function Home() {
         textAlign: "center",
       }}
     >
-      <Typography variant="h4">Request songs for Jacobs 21st</Typography>
-      <Typography variant="subtitle1">Press the "+" once to add a song</Typography>
-      <SongSearch />
+      <Typography variant="h4" sx={{padding: "10px"}}>Enter your name</Typography>
+      <TextField id="name-entry" label="name" variant="filled" sx={{padding: "10px"}}/>
+      <Button  variant="contained" sx={{padding: "10px"}} onClick={() => {
+        navigate("/search");
+      }}>
+        Go!
+      </Button>
     </Container>
   );
 }
