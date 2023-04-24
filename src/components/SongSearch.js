@@ -13,20 +13,36 @@ export default function SongSearch() {
   const store = useStore();
   const [rows, setRows] = useState([]);
   const [butt, setButt] = useState([]);
+  const [buttcol, setButtcol] = useState([]);
 
   async function searchSong(song) {
     const response = await searchBarSong(song, store.accessToken);
     setRows(response.tracks.items);
     var temp = Array(rows.length).fill("+");
     setButt(temp);
+    temp = Array(rows.length).fill("lightblue");
+    setButtcol(temp)
+  }
+
+  function buttonCheck(index) {
+    temp = [...buttcol];
+    temp[index] = "lightgreen";
+    setButtcol(temp);
+    var temp = [...butt];
+    temp[index] = "✓";
+    setButt(temp);
   }
 
   function addTracks(song, index) {
-    //add login here
-    //sendMessage(song);
-    var temp = [...butt];
-    temp[index] = "✓"
-    setButt(temp);
+    if (butt[index] == "✓") {
+      console.log("This button has been already pressed")
+    }
+    else {
+      //add login here
+      //sendMessage(song);
+      //need conditional statements based on response
+      buttonCheck(index)
+    }
   }
 
   return (
@@ -66,7 +82,7 @@ export default function SongSearch() {
               </Typography>
             </Grid>
             <Grid item xs={2} sx={{ display: "flex", alignItems: "center" }}>
-              <Button variant="contained" sx={{ height: "40px" }} size="small" onClick={() => addTracks(song, index)}>
+              <Button variant="contained" sx={{ height: "40px", backgroundColor: buttcol[index], color: "black" }} size="small" onClick={() => addTracks(song, index)}>
                 {butt[index]}
               </Button>
             </Grid>
