@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-import { Grid, Button, Typography, Container } from "@mui/material";
+import { Typography, Container } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 import { sendMessage } from "../services/api";
-import SongSearch from "../components/UserAdd/SongSearch";
+import SongSearch from "../components/SongSearch";
 
 function Home() {
   const theme = useTheme();

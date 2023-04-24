@@ -1,6 +1,7 @@
 import axios from "axios";
 
-import { Buffer } from "buffer";
+import { fc } from "../firebase/firebase";
+import { httpsCallable } from "firebase/functions";
 
 export const getUser = async (token) => {
   var config = {
@@ -99,29 +100,17 @@ export const sendMessage = async (message) => {
     .catch(function (error) {
       console.log(error);
     });
-
   return response;
 };
 
 export const getClientAuth = async () => {
-  const spotify_client_id = "5a6369619e834e6fba2caaeca458f030";
-  const spotify_client_secret = "51617b77f471429399dcaba5cbdd0097";
-  const authOptions = {
-    url: "https://accounts.spotify.com/api/token",
-    method: "post",
-
-    headers: {
-      Authorization: "Basic " + Buffer.from(spotify_client_id + ":" + spotify_client_secret).toString("base64"),
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    data: {
-      grant_type: "client_credentials",
-    },
-  };
-
-  const response = await axios(authOptions).catch((error) => {
-    console.log(error);
-  });
-
-  return response.data.access_token;
+  const spotifyLogin = httpsCallable(fc, "clientAuth");
+  return spotifyLogin()
+    .then((result) => {
+      console.log(result.data);
+      return result.data.access_token;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
