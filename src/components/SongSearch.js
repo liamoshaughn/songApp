@@ -7,14 +7,57 @@ import SearchIcon from "@mui/icons-material/Search";
 import { searchBarSong } from "../services/api";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { useStore } from "../store/store";
+import { sendMessage } from "../services/api";
 
-export default function SongSearch({ addTracks }) {
+export default function SongSearch() {
   const store = useStore();
   const [rows, setRows] = useState([]);
+  const [butt, setButt] = useState([]);
+  const [buttcol, setButtcol] = useState([]);
 
   async function searchSong(song) {
     const response = await searchBarSong(song, store.accessToken);
     setRows(response.tracks.items);
+    var temp = Array(rows.length).fill("+");
+    setButt(temp);
+    temp = Array(rows.length).fill("lightblue");
+    setButtcol(temp)
+  }
+
+  function buttonCheck(index, test) {
+    var temp;
+    if (test) {
+      temp = [...buttcol];
+      temp[index] = "lightgreen";
+      setButtcol(temp);
+      temp = [...butt];
+      temp[index] = "✓";
+      setButt(temp);
+    } else {
+      temp = [...buttcol];
+      temp[index] = "lightcoral";
+      setButtcol(temp);
+      temp = [...butt];
+      temp[index] = "↺";
+      setButt(temp);
+    }
+  }
+
+  async function addTracks(song, index) {
+    if (butt[index] === "✓") {
+      console.log("This button has been already pressed")
+    }
+    else {
+      //add login here
+      var response = await sendMessage(song);
+      console.log("printing status")
+      console.log(response.status)
+      if (response.status === 200) {
+        buttonCheck(index, 1)
+      } else {
+        buttonCheck(index, 0)
+      }
+    }
   }
 
   return (
@@ -33,7 +76,7 @@ export default function SongSearch({ addTracks }) {
         ></TextField>
       </Grid>
 
-      {rows.map((song) => {
+      {rows.map((song, index) => {
         return (
           <>
             <Grid item xs={3}>
@@ -54,8 +97,8 @@ export default function SongSearch({ addTracks }) {
               </Typography>
             </Grid>
             <Grid item xs={2} sx={{ display: "flex", alignItems: "center" }}>
-              <Button variant="contained" sx={{ height: "40px" }} size="small" onClick={() => addTracks(song)}>
-                +
+              <Button variant="contained" sx={{ height: "40px", backgroundColor: buttcol[index], color: "black" }} size="small" onClick={() => addTracks(song, index)}>
+                {butt[index]}
               </Button>
             </Grid>
           </>
