@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 
 import { Button, Typography, Container, Grid, TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { searchBarSong } from "../../services/api";
+import { searchBarSong } from "../services/api";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
-import { useStore } from "../../store/store";
+import { useStore } from "../store/store";
 
 export default function SongSearch({ addTracks }) {
   const store = useStore();
