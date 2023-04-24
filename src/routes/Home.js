@@ -2,8 +2,6 @@ import React from "react";
 
 import { Typography, Container } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-
-import { sendMessage } from "../services/api";
 import SongSearch from "../components/SongSearch";
 
 function Home() {
@@ -20,7 +18,7 @@ function Home() {
     >
       <Typography variant="h4">Request songs for Jacobs 21st</Typography>
       <Typography variant="subtitle1">Press the "+" once to add a song</Typography>
-      <SongSearch addTracks={(song) => sendMessage(song.id)} />
+      <SongSearch />
     </Container>
   );
 }
