@@ -7,8 +7,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import { searchBarSong } from "../services/api";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { useStore } from "../store/store";
-
 import { sendMessage } from "../services/api";
+
 export default function SongSearch() {
   const store = useStore();
   const [rows, setRows] = useState([]);
@@ -20,7 +20,7 @@ export default function SongSearch() {
 
   function addTracks(song) {
     //add login here
-    sendMessage(song);
+    //sendMessage(song);
   }
 
   return (
