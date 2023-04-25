@@ -4,12 +4,14 @@ import { Grid, Button, TextField } from "@mui/material";
 import { Typography, Container } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useStore } from "../store/store"
 
 
 function Home() {
   const navigate = useNavigate();
   const theme = useTheme();
   console.log(theme);
+  const store = useStore();
   var uname = "";
 
   function changeval(val) {
@@ -17,6 +19,7 @@ function Home() {
   }
 
   function navsearch() {
+    store.setName(uname);
     navigate("/search");
   }
 
