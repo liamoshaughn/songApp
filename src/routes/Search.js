@@ -3,14 +3,13 @@ import React from "react";
 import { Typography, Container } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import SongSearch from "../components/SongSearch";
-import { useStore, addToken, addUser } from "../store/store";
+import { useStore } from "../store/store"
 
 function Search() {
-    const store = useStore();
-    const uname = store.get('user')
-    console.log(uname.name)
     const theme = useTheme();
+    const store = useStore();
     console.log(theme);
+    const name = store.name;
     return (
       <Container
         sx={{

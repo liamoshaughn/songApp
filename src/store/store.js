@@ -7,6 +7,12 @@ export const useStore = create((set) => ({
     set((state) => {
       return { accessToken: token };
     }),
+  name: "",
+  setName: (val) => {
+    set((state) => {
+      return { name: val }
+    })
+  }
 }));
 
 export function addToken(token) {
