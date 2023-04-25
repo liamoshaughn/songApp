@@ -10,6 +10,16 @@ function Home() {
   const navigate = useNavigate();
   const theme = useTheme();
   console.log(theme);
+  var uname = "";
+
+  function changeval(val) {
+    uname = val;
+  }
+
+  function navsearch() {
+    navigate("/search");
+  }
+
   return (
     <Container
       sx={{
@@ -17,12 +27,28 @@ function Home() {
         flexFlow: "column",
         alignItems: "center",
         textAlign: "center",
-      }}
-    >
-      <Typography variant="h4" sx={{padding: "10px"}}>Enter your name</Typography>
-      <TextField id="name-entry" label="name" variant="filled" sx={{padding: "10px"}}/>
-      <Button  variant="contained" sx={{padding: "10px"}} onClick={() => {
-        navigate("/search");
+      }}>
+    
+      <Typography 
+        variant="h4" 
+        sx={{padding: "10px"}}>
+          Enter your name
+      </Typography>
+
+      <TextField 
+        id="name-entry" 
+        label="name" 
+        variant="filled" 
+        sx={{padding: "10px"}} 
+        onChange={(event) => {
+          changeval(event.target.value);
+        }}/>
+
+      <Button  
+        variant="contained" 
+        sx={{padding: "10px"}} 
+        onClick={() => {
+          navsearch()
       }}>
         Go!
       </Button>
