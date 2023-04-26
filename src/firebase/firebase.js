@@ -22,6 +22,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
-setUserProperties(analytics, { user_type: "admin" });
+setUserProperties(analytics, { user_type: "client" });
 export const db = getFirestore(firebaseApp);
 export const fc = getFunctions(firebaseApp, "australia-southeast1");
