@@ -97,7 +97,13 @@ export default function SongSearch(props) {
               </Typography>
             </Grid>
             <Grid item xs={2} sx={{ display: "flex", alignItems: "center" }}>
-              <Button variant="contained" sx={{ height: "40px", backgroundColor: buttcol[index], color: "black" }} size="small" onClick={() => addTracks(song, index)}>
+              <Button 
+                variant="contained" 
+                sx={{ height: "40px", 
+                backgroundColor: buttcol[index], 
+                color: "black" }} 
+                size="small" 
+                onClick={() => addTracks(song, index)}>
                 {butt[index]}
               </Button>
             </Grid>
