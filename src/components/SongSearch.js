@@ -9,7 +9,7 @@ import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { useStore } from "../store/store";
 import { sendMessage } from "../services/api";
 
-export default function SongSearch() {
+export default function SongSearch(props) {
   const store = useStore();
   const [rows, setRows] = useState([]);
   const [butt, setButt] = useState([]);
@@ -64,6 +64,8 @@ export default function SongSearch() {
     <Grid container spacing={2} maxWidth={"500px"} width={"75vw"}>
       <Grid item xs={12}>
         <TextField
+          disabled={!props.enable}
+          fullWidth
           placeholder="Search for a song"
           onChange={(event) => searchSong(event.target.value)}
           InputProps={{

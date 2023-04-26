@@ -1,26 +1,25 @@
-import React from "react";
+import { React, useState } from "react";
 
-import { Grid, Button, TextField } from "@mui/material";
-import { Typography, Container } from "@mui/material";
+import { Typography, Container, TextField } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useStore } from "../store/store"
-
+import SongSearch from "../components/SongSearch";
 
 function Home() {
-  const navigate = useNavigate();
   const theme = useTheme();
+  const [name, setName] = useState("");
+  const [enable, setEnable] = useState(false);
+
   console.log(theme);
-  const store = useStore();
-  var uname = "";
 
-  function changeval(val) {
-    uname = val;
-  }
-
-  function navsearch() {
-    store.setName(uname);
-    navigate("/search");
+  function changeName(val) {
+    
+    if (val == "") {
+      setName("")
+      setEnable(false)
+    } else {
+      setName(val)
+      setEnable(true)
+    }
   }
 
   return (
@@ -30,31 +29,14 @@ function Home() {
         flexFlow: "column",
         alignItems: "center",
         textAlign: "center",
-      }}>
-    
-      <Typography 
-        variant="h4" 
-        sx={{padding: "10px"}}>
-          Enter your name
-      </Typography>
-
+      }}
+    >
+      <Typography variant="h4">Request songs for Jacobs 21st</Typography>
       <TextField 
-        id="name-entry" 
-        label="name" 
-        variant="filled" 
-        sx={{padding: "10px"}} 
-        onChange={(event) => {
-          changeval(event.target.value);
-        }}/>
-
-      <Button  
-        variant="contained" 
-        sx={{padding: "10px"}} 
-        onClick={() => {
-          navsearch()
-      }}>
-        Go!
-      </Button>
+        placeholder="Enter your name"
+        onChange={(event) => changeName(event.target.value)}
+      />
+      <SongSearch name = {name} enable = {enable} />
     </Container>
   );
 }
