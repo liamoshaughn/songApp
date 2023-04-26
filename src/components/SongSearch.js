@@ -50,8 +50,6 @@ export default function SongSearch(props) {
     else {
       //add login here
       var response = await sendMessage(song);
-      console.log("printing status")
-      console.log(response.status)
       if (response.status === 200) {
         buttonCheck(index, 1)
       } else {
