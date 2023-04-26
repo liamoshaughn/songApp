@@ -36,7 +36,7 @@ function Home() {
         placeholder="Enter your name"
         onChange={(event) => changeName(event.target.value)}
       />
-      <SongSearch name = {name} enable = {enable} />
+      { enable ? <SongSearch name = {name} enable = {enable} /> : null }
     </Container>
   );
 }
