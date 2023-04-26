@@ -18,7 +18,6 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/auth/callback" element={<Home />}></Route>
       </Routes>
     </ThemeProvider>
   );
