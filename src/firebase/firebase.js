@@ -1,8 +1,8 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, setUserProperties } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { getFunctions } from "firebase/functions";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,12 +14,14 @@ const firebaseConfig = {
   projectId: "songapp-384011",
   storageBucket: "songapp-384011.appspot.com",
   messagingSenderId: "415269484901",
-  appId: "1:415269484901:web:27153fd20f18b1d85c098c",
-  measurementId: "G-NHBR5E0W7Y",
+  appId: "1:415269484901:web:3987c1e55b71173b5c098c",
+  measurementId: "G-X3KB49MSQ6",
 };
 
 // Initialize Firebase
+// Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
+setUserProperties(analytics, { user_type: "client" });
 export const db = getFirestore(firebaseApp);
 export const fc = getFunctions(firebaseApp, "australia-southeast1");
