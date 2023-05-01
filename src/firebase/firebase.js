@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics, setUserProperties } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
-import { getFunctions } from "firebase/functions";
+import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -25,3 +25,6 @@ const analytics = getAnalytics(firebaseApp);
 setUserProperties(analytics, { user_type: "client" });
 export const db = getFirestore(firebaseApp);
 export const fc = getFunctions(firebaseApp, "australia-southeast1");
+if (process.env.NODE_ENV == 'development') {
+  connectFunctionsEmulator(fc, 'localhost', 5001);
+}

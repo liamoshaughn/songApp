@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { Button, Typography, Container, Grid, TextField, InputAdornment } from '@mui/material';
+import { Button, Typography, Container, Grid, TextField, InputAdornment, useTheme } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { searchBarSong } from '../services/api';
 import { DataGrid, GridToolbarQuickFilter } from '@mui/x-data-grid';
@@ -11,17 +11,21 @@ import { sendMessage } from '../services/api';
 
 export default function SongSearch(props) {
   const store = useStore();
+  const theme = useTheme();
+
   const [rows, setRows] = useState([]);
   const [butt, setButt] = useState([]);
   const [buttcol, setButtcol] = useState([]);
 
   async function searchSong(song) {
-    const response = await searchBarSong(song, store.accessToken);
-    setRows(response.tracks.items);
-    var temp = Array(rows.length).fill('+');
-    setButt(temp);
-    temp = Array(rows.length).fill('lightblue');
-    setButtcol(temp);
+    if (props.enable) {
+      const response = await searchBarSong(song, store.accessToken);
+      setRows(response.tracks.items);
+      var temp = Array(rows.length).fill('+');
+      setButt(temp);
+      temp = Array(rows.length).fill('lightblue');
+      setButtcol(temp);
+    }
   }
 
   function buttonCheck(index, test) {
@@ -48,8 +52,10 @@ export default function SongSearch(props) {
       console.log('This button has been already pressed');
     } else {
       //add login here
-      var response = await sendMessage(song.id);
+      var response = await sendMessage(song.id, props.name);
       console.log('printing status');
+
+      //This logic is now going to have to be redone status is no longer returned as it is now an internal google call
       console.log(response.status);
       if (response.status === 200) {
         buttonCheck(index, 1);
@@ -63,7 +69,6 @@ export default function SongSearch(props) {
     <Grid container spacing={2} maxWidth={'500px'} width={'75vw'}>
       <Grid item xs={12}>
         <TextField
-          disabled={!props.enable}
           fullWidth
           placeholder="Search for a song"
           onChange={(event) => searchSong(event.target.value)}
@@ -75,6 +80,11 @@ export default function SongSearch(props) {
             ),
           }}
         ></TextField>
+        {!props.enable && (
+          <Typography variant="subtitle2" color={theme.palette.error.main}>
+            Please enter name before searching
+          </Typography>
+        )}
       </Grid>
 
       {rows.map((song, index) => {
@@ -99,15 +109,9 @@ export default function SongSearch(props) {
             </Grid>
             <Grid item xs={2} sx={{ display: 'flex', alignItems: 'center' }}>
               <Button
-                
                 variant="contained"
-                
-                sx={{ height: '40px', 
-                backgroundColor: buttcol[index], 
-                color: 'black' }}
-                
+                sx={{ height: '40px', backgroundColor: buttcol[index], color: 'black' }}
                 size="small"
-                
                 onClick={() => addTracks(song, index)}
               >
                 {butt[index]}
