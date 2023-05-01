@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { Button, Typography, Container, Grid, TextField, InputAdornment, useTheme } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { shadows } from '@mui/system'
 import { searchBarSong } from '../services/api';
 import { DataGrid, GridToolbarQuickFilter } from '@mui/x-data-grid';
 import { useStore } from '../store/store';
@@ -52,7 +53,7 @@ export default function SongSearch(props) {
       console.log('This button has been already pressed');
     } else {
       //add login here
-      var response = await sendMessage(song.id, props.name).catch((error) => {
+      var response = await sendMessage(song.id, props.name).then((error) => {
         console.log("LOG ERROR")
         console.log(error);
       });
