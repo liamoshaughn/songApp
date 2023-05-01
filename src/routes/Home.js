@@ -1,59 +1,41 @@
-import React, { useState, useEffect } from "react";
+import { React, useState } from 'react';
 
-import { useLocation, useNavigate } from "react-router-dom";
-
-import { Grid, Button } from "@mui/material";
-import DevelopButtons from "../components/DevelopButtons";
-import Cookies from "universal-cookie";
-import { addToken, addUser, useStore } from "../store/store";
-import { callback, getUser } from "../services/api";
-
-async function getUserProfile(token) {
-  const request = await getUser(token);
-
-  addUser(request);
-}
+import { Typography, Container, TextField } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import SongSearch from '../components/SongSearch';
 
 function Home() {
-  const navigate = useNavigate();
-  const cookies = new Cookies();
-  const store = useStore();
+  const theme = useTheme();
+  const [name, setName] = useState('');
+  const [enable, setEnable] = useState(false);
 
-  const location = useLocation();
-  useEffect(() => {
-    if (location.pathname == "/auth/callback") {
-      callback();
+  function changeName(val) {
+    if (val == '') {
+      setName('');
+      setEnable(false);
+    } else {
+      setName(val);
+      setEnable(true);
     }
-    addToken(cookies.get("access_token"));
-    getUserProfile(cookies.get("access_token"));
-  }, []);
+  }
 
   return (
-    <div className="App">
-      <DevelopButtons />
-      <Grid spacing={3} container direction="row" justifyContent="center" alignItems="center" sx={{ marginY: "auto" }}>
-        <Grid item>
-          <Button
-            variant="contained"
-            onClick={() => {
-              navigate("/list");
-            }}
-          >
-            Go to List
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
-            variant="contained"
-            onClick={() => {
-              navigate("/spotifyAdd");
-            }}
-          >
-            Go to Spotify Add
-          </Button>
-        </Grid>
-      </Grid>
-    </div>
+    <Container
+      sx={{
+        display: 'flex',
+        flexFlow: 'column',
+        alignItems: 'center',
+        textAlign: 'center',
+      }}
+    >
+      <Typography variant="h4">Request songs</Typography>
+      <TextField
+        placeholder="Enter your name"
+        onChange={(event) => changeName(event.target.value)}
+        sx={{ my: '20px' }}
+      />
+      <SongSearch name={name} enable={enable} />
+    </Container>
   );
 }
 

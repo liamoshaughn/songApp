@@ -7,28 +7,14 @@ export const useStore = create((set) => ({
     set((state) => {
       return { accessToken: token };
     }),
-  addProfile: (user) =>
+  name: "",
+  setName: (val) => {
     set((state) => {
-      return { userProfile: user };
-    }),
+      return { name: val }
+    })
+  }
 }));
 
 export function addToken(token) {
   useStore.getState().addAccess(token);
-}
-export function addUser(user) {
-  useStore.getState().addProfile(user);
-}
-
-export const useSongStore = create((set) => ({
-  playlistId: "",
-
-  addPlaylist: (id) =>
-    set((state) => {
-      return { playlistId: id };
-    }),
-}));
-
-export function addPlaylistId(id) {
-  useSongStore.getState().addPlaylist(id);
 }
