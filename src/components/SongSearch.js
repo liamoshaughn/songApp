@@ -23,7 +23,7 @@ export default function SongSearch(props) {
       setRows(response.tracks.items);
       var temp = Array(rows.length).fill('+');
       setButt(temp);
-      temp = Array(rows.length).fill('lightblue');
+      temp = Array(rows.length).fill(theme.palette.primary.main);
       setButtcol(temp);
     }
   }
@@ -32,14 +32,14 @@ export default function SongSearch(props) {
     var temp;
     if (test) {
       temp = [...buttcol];
-      temp[index] = 'lightgreen';
+      temp[index] = theme.palette.success.main;
       setButtcol(temp);
       temp = [...butt];
       temp[index] = '✓';
       setButt(temp);
     } else {
       temp = [...buttcol];
-      temp[index] = 'lightcoral';
+      temp[index] = theme.palette.error.main;
       setButtcol(temp);
       temp = [...butt];
       temp[index] = '↺';
