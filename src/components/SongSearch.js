@@ -52,7 +52,10 @@ export default function SongSearch(props) {
       console.log('This button has been already pressed');
     } else {
       //add login here
-      var response = await sendMessage(song.id, props.name);
+      var response = await sendMessage(song.id, props.name).catch((error) => {
+        console.log("LOG ERROR")
+        console.log(error);
+      });
       console.log('printing status');
 
       //This logic is now going to have to be redone status is no longer returned as it is now an internal google call
