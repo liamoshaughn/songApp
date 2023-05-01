@@ -56,12 +56,12 @@ export default function SongSearch(props) {
       console.log('printing status');
 
       //This logic is now going to have to be redone status is no longer returned as it is now an internal google call
-      console.log(response.status);
-      if (response.status === 200) {
-        buttonCheck(index, 1);
-      } else {
-        buttonCheck(index, 0);
-      }
+      // console.log(response.status);
+      // if (response.status === 200) {
+      //   buttonCheck(index, 1);
+      // } else {
+      //   buttonCheck(index, 0);
+      // }
     }
   }
 
