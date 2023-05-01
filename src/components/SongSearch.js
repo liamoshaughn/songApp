@@ -7,11 +7,13 @@ import SearchIcon from '@mui/icons-material/Search';
 import { searchBarSong } from '../services/api';
 import { DataGrid, GridToolbarQuickFilter } from '@mui/x-data-grid';
 import { useStore } from '../store/store';
-import { sendMessage } from '../services/api';
+import { usePostMessageMutation } from '../services/api';
 
 export default function SongSearch(props) {
   const store = useStore();
   const theme = useTheme();
+const sendMessage = usePostMessageMutation();
+
 
   const [rows, setRows] = useState([]);
   const [butt, setButt] = useState([]);
@@ -52,22 +54,17 @@ export default function SongSearch(props) {
       console.log('This button has been already pressed');
     } else {
       //add login here
-      var response = await sendMessage(song.id, props.name);
-      console.log('printing status');
+      sendMessage.mutate({ message: song.id, name: props.name });
 
-      //This logic is now going to have to be redone status is no longer returned as it is now an internal google call
-      // console.log(response.status);
-      // if (response.status === 200) {
-      //   buttonCheck(index, 1);
-      // } else {
-      //   buttonCheck(index, 0);
-      // }
+
     }
   }
 
   return (
     <Grid container spacing={2} maxWidth={'500px'} width={'75vw'}>
       <Grid item xs={12}>
+         {sendMessage.isLoading && "hello world"}
+         
         <TextField
           fullWidth
           placeholder="Search for a song"
@@ -80,6 +77,7 @@ export default function SongSearch(props) {
             ),
           }}
         ></TextField>
+       
         {!props.enable && (
           <Typography variant="subtitle2" color={theme.palette.error.main}>
             Please enter name before searching
