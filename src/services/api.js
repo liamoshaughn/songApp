@@ -95,7 +95,7 @@ export const sendMessage = async ({ message, name }) => {
   // Call the Firebase Function using Axios
 
   const sendMessageFirestore = httpsCallable(fc, 'addMessage');
-  return await sendMessageFirestore({ message: message, name: name })
+  return await sendMessageFirestore({ trackID: message, name: name })
     .then((result) => {
       console.log(result.data);
       return result.data.access_token;

@@ -45,7 +45,7 @@ export default function SongSearch(props) {
         )}
       </Grid>
       {rows.map((song, index) => {
-        return <SongTile key={index} song={song} />;
+        return <SongTile key={index} song={song} name={props.name} />;
       })}
     </Grid>
   );

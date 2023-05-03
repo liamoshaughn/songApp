@@ -3,17 +3,18 @@ import React from 'react';
 import { addToQueue } from '../services/api';
 import { usePostMessageMutation } from '../services/api';
 import { useStore } from '../store/store';
-export default function SongTile({ song }) {
+export default function SongTile({ song, name }) {
   const sendMessage = usePostMessageMutation();
   const store = useStore();
   const theme = useTheme();
 
   function handleSend() {
-    sendMessage.mutate({ message: song.id, name: song.name });
+    sendMessage.mutate({ message: song.id, name: name });
   }
 
   return (
     <Grid sx={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }} item xs={12}>
+      //https://tanstack.com/query/latest/docs/react/guides/mutations
       {sendMessage.isSuccess && (
         <Box
           sx={{
