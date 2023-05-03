@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { fc } from '../firebase/firebase';
 import { httpsCallable } from 'firebase/functions';
+import { useMutation } from '@tanstack/react-query';
 
 export const getUser = async (token) => {
   var config = {
@@ -90,19 +91,27 @@ export const searchBarSong = async (data, token) => {
   return response.data;
 };
 
-export const sendMessage = async (message, name) => {
-  console.log(message);
+export const sendMessage = async ({ message, name }) => {
   // Call the Firebase Function using Axios
+
   const sendMessageFirestore = httpsCallable(fc, 'addMessage');
-  return sendMessageFirestore({message: message, name: name})
+  return await sendMessageFirestore({ message: message, name: name })
     .then((result) => {
       console.log(result.data);
       return result.data.access_token;
     })
     .catch((error) => {
-      console.error(error);
+      console.log('error');
+      return error;
     });
 };
+
+export const usePostMessageMutation = () =>
+  useMutation({
+    mutationFn: (message) => {
+      return sendMessage(message);
+    },
+  });
 
 export const getClientAuth = async () => {
   const spotifyLogin = httpsCallable(fc, 'clientAuth');
