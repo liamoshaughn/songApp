@@ -102,7 +102,7 @@ export const sendMessage = async ({ message, name }) => {
     })
     .catch((error) => {
       console.log('error');
-      return error;
+      throw new Error('failed to add song')
     });
 };
 

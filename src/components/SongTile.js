@@ -70,6 +70,29 @@ export default function SongTile({ song, name }) {
           <CircularProgress color="info"/>
         </AnimatedBox>
       ) : null}
+
+      {sendMessage.isError ? (
+        // Apply fadeAnimation to AnimatedBox
+        <AnimatedBox
+          style={{
+            width: 400 * 0.9 + 'px',
+            height: 120 * 0.9 + 'px',
+            position: 'absolute',
+            backgroundColor: theme.palette.error.main,
+            zIndex: '100',
+            boxShadow: '0 0 14px 14px ' + theme.palette.error.main,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+        
+            ...SuccessFadeAnimation,
+          }}
+        >
+          <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+            Error, refresh page and try again
+          </Typography>
+        </AnimatedBox>
+      ) : null}
       <Box
         sx={{
           width: '350px',
