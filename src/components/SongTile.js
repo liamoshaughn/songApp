@@ -1,23 +1,37 @@
 import { Button, Typography, Grid, Box, useTheme, CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { addToQueue } from '../services/api';
 import { usePostMessageMutation } from '../services/api';
 import { useStore } from '../store/store';
 import { useSpring, animated, easings } from 'react-spring';
 
+const animatedBoxStyles = {
+  width: '90%',
+  height: '85%',
+  position: 'absolute',
+  zIndex: '100',
+  boxShadow: '0 0 14px 14px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
 export default function SongTile({ song, name }) {
   const sendMessage = usePostMessageMutation();
-  const store = useStore();
   const theme = useTheme();
+  console.log(theme);
 
   const AnimatedBox = animated(Box);
   const SuccessFadeAnimation = useSpring({
-    from: { opacity: sendMessage.isSuccess ? 0.96 : 0 },
-    to: { opacity: sendMessage.isSuccess ? 0 : 0.96 },
+    from: {
+      opacity: sendMessage.isSuccess || sendMessage.isError ? 0.9 : 0,
+    },
+    to: {
+      opacity: sendMessage.isSuccess || sendMessage.isError ? 0 : 0.9,
+    },
     config: { duration: 6000, easing: easings.easeInExpo },
     // Reset the mutation when the animation is complete
     onRest: () => {
-      if (sendMessage.isSuccess) {
+      if (sendMessage.isSuccess || sendMessage.isError) {
         sendMessage.reset();
       }
     },
@@ -28,21 +42,29 @@ export default function SongTile({ song, name }) {
   }
 
   return (
-    <Grid sx={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }} item xs={12}>
+    <Grid
+      sx={{
+        boxShadow: 3,
+        borderRadius: '16px',
+        padding: '16px',
+        mt: '15px',
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: "rgba(255, 255, 255, 0.12)"
+      }}
+      item
+      xs={12}
+    >
       {/* Check if sendMessage.isSuccess is truthy */}
       {sendMessage.isSuccess ? (
         // Apply fadeAnimation to AnimatedBox
         <AnimatedBox
           style={{
-            width: 500 * 0.9 + 'px',
-            height: 120 * 0.9 + 'px',
-            position: 'absolute',
+            ...animatedBoxStyles,
             backgroundColor: theme.palette.success.main,
-            zIndex: '100',
-            boxShadow: '0 0 10px 10px ' + theme.palette.success.main,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            boxShadow: `${animatedBoxStyles.boxShadow} ${theme.palette.success.main}`,
             ...SuccessFadeAnimation,
           }}
         >
@@ -55,19 +77,13 @@ export default function SongTile({ song, name }) {
         // Apply fadeAnimation to AnimatedBox
         <AnimatedBox
           style={{
-            width: 400 * 0.9 + 'px',
-            height: 120 * 0.9 + 'px',
-            position: 'absolute',
-            backgroundColor: theme.palette.info.dark,
-            zIndex: '100',
-            boxShadow: '0 0 10px 10px ' + theme.palette.info.dark,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            opacity: 0.95,
+            ...animatedBoxStyles,
+            backgroundColor: theme.palette.info.main,
+            boxShadow: `${animatedBoxStyles.boxShadow} ${theme.palette.info.main}`,
+            ...SuccessFadeAnimation,
           }}
         >
-          <CircularProgress color="info"/>
+          <CircularProgress color="info" />
         </AnimatedBox>
       ) : null}
 
@@ -75,16 +91,9 @@ export default function SongTile({ song, name }) {
         // Apply fadeAnimation to AnimatedBox
         <AnimatedBox
           style={{
-            width: 400 * 0.9 + 'px',
-            height: 120 * 0.9 + 'px',
-            position: 'absolute',
+            ...animatedBoxStyles,
             backgroundColor: theme.palette.error.main,
-            zIndex: '100',
-            boxShadow: '0 0 14px 14px ' + theme.palette.error.main,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-        
+            boxShadow: `${animatedBoxStyles.boxShadow} ${theme.palette.error.main}`,
             ...SuccessFadeAnimation,
           }}
         >
@@ -95,16 +104,14 @@ export default function SongTile({ song, name }) {
       ) : null}
       <Box
         sx={{
-          width: '350px',
-          height: '120px',
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <img style={{ maxWidth: '100px' }} alt="Album Cover" src={song.album.images[1].url} />
-        <div style={{ paddingLeft: '15px', width: '220px' }}>
+        <img style={{ width: '25%' }} alt="Album Cover" src={song.album.images[1].url} />
+        <div style={{ }}>
           <Box>
             <Typography sx={{ fontWeight: 'bold' }}>
               {new Date(song.album.release_date).toLocaleString('en-AU', {

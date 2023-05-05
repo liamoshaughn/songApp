@@ -24,8 +24,8 @@ export default function SongSearch(props) {
   }
 
   return (
-    <Grid container spacing={2} maxWidth={'500px'} width={'75vw'}>
-      <Grid item xs={12}>
+    <Grid container spacing={2} maxWidth={'500px'} width={'75vw'} sx={{marginX:'auto'}}>
+      <Grid item xs={12} sx={{paddingLeft:'0 !important'}}>
         <TextField
           disabled={!props.enable}
           fullWidth
