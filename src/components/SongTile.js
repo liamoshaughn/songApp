@@ -78,8 +78,8 @@ export default function SongTile({ song, name }) {
         <AnimatedBox
           style={{
             ...animatedBoxStyles,
-            backgroundColor: theme.palette.info.main,
-            boxShadow: `${animatedBoxStyles.boxShadow} ${theme.palette.info.main}`,
+            backgroundColor: theme.palette.info.dark,
+            boxShadow: `${animatedBoxStyles.boxShadow} ${theme.palette.info.dark}`,
             ...SuccessFadeAnimation,
           }}
         >
