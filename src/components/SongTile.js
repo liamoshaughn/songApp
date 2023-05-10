@@ -80,7 +80,6 @@ export default function SongTile({ song, name }) {
             ...animatedBoxStyles,
             backgroundColor: theme.palette.info.dark,
             boxShadow: `${animatedBoxStyles.boxShadow} ${theme.palette.info.dark}`,
-            ...SuccessFadeAnimation,
           }}
         >
           <CircularProgress color="info" />
