@@ -29,6 +29,7 @@ function Home() {
       }}
     >
       <Typography variant="h4">Request songs</Typography>
+      <Typography variant="subtitle2">Search below to request a song, once accepted it will be added to the queue</Typography>
       <TextField
         placeholder="Enter your name"
         onChange={(event) => changeName(event.target.value)}

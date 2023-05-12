@@ -24,6 +24,7 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
+    "react-spring": "^9.7.1",
     "spotify-web-api-js": "^1.5.2",
     "universal-cookie": "^4.0.4",
     "web-vitals": "^3.3.0",
