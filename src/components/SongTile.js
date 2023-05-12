@@ -18,7 +18,6 @@ const animatedBoxStyles = {
 export default function SongTile({ song, name }) {
   const sendMessage = usePostMessageMutation();
   const theme = useTheme();
-  console.log(theme);
 
   const AnimatedBox = animated(Box);
   const SuccessFadeAnimation = useSpring({
