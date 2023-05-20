@@ -1,18 +1,28 @@
-import { create } from "zustand";
+import { create } from 'zustand';
+import colours from "../theme/colours.json"
+import typography from "../theme/typography.json"
 
 export const useStore = create((set) => ({
-  accessToken: "",
-  userProfile: "",
+  accessToken: '',
+  userProfile: '',
   addAccess: (token) =>
     set((state) => {
       return { accessToken: token };
     }),
-  name: "",
+  name: '',
   setName: (val) => {
     set((state) => {
-      return { name: val }
-    })
-  }
+      return { name: val };
+    });
+  },
+}));
+
+export const useSettings = create((set) => ({
+  theme: { colours: colours, typography: typography},
+  addTheme: (theme) =>
+    set((state) => {
+      return { theme: theme };
+    }),
 }));
 
 export function addToken(token) {

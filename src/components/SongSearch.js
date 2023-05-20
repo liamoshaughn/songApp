@@ -24,10 +24,10 @@ export default function SongSearch(props) {
   }
 
   return (
-    <Grid container spacing={2} maxWidth={'500px'} width={'75vw'} sx={{marginX:'auto'}}>
+    <Grid container spacing={2} maxWidth={'500px'} width={'80vw'} sx={{margin:0}}>
       <Grid item xs={12} sx={{paddingLeft:'0 !important'}}>
         <TextField
-          disabled={!props.enable}
+        sx={{backgroundColor:theme.palette.secondary.main, borderRadius: '4px'}}
           fullWidth
           placeholder="Search for a song"
           onChange={(event) => searchSong(event.target.value)}
@@ -39,11 +39,6 @@ export default function SongSearch(props) {
             ),
           }}
         ></TextField>
-        {!props.enable && (
-          <Typography variant="subtitle2" color={theme.palette.error.main}>
-            Please enter name before searching
-          </Typography>
-        )}
       </Grid>
       {rows.map((song, index) => {
         return <SongTile key={index} song={song} name={props.name} />;

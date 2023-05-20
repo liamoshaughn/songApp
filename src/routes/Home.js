@@ -9,15 +9,6 @@ function Home() {
   const [name, setName] = useState('');
   const [enable, setEnable] = useState(false);
 
-  function changeName(val) {
-    if (val == '') {
-      setName('');
-      setEnable(false);
-    } else {
-      setName(val);
-      setEnable(true);
-    }
-  }
 
   return (
     <Container
@@ -28,14 +19,15 @@ function Home() {
         textAlign: 'center',
       }}
     >
-      <Typography variant="h4">Request songs</Typography>
-      <Typography variant="subtitle2">Search below to request a song, once accepted it will be added to the queue</Typography>
-      <TextField
+      {/* <TextField
         placeholder="Enter your name"
         onChange={(event) => changeName(event.target.value)}
-        sx={{ my: '20px' }}
-      />
-      <SongSearch name={name} enable={enable} />
+         sx={{backgroundColor:theme.palette.secondary.main, borderRadius: '4px', marginTop:'9px'}}
+      />  */}
+      <Typography variant="h1">Request songs</Typography>
+      <Typography sx={{color: theme.palette.background.paper, marginTop:'9px', marginBottom: '9px'}}>Search below to request a song, once accepted it will be added to the queue</Typography>
+      
+      <SongSearch name={name} />
     </Container>
   );
 }
