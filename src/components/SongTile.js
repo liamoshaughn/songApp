@@ -1,4 +1,4 @@
-import { Button, Typography, Grid, Box, useTheme, CircularProgress, Card, Paper } from '@mui/material';
+import { Button, Typography, Grid, Box, useTheme, CircularProgress, Card } from '@mui/material';
 import React from 'react';
 import { usePostMessageMutation } from '../services/api';
 import { useSpring, animated, easings } from 'react-spring';
@@ -15,6 +15,7 @@ const animatedBoxStyles = {
 };
 
 export default function SongTile({ song, name }) {
+  console.log(easings.easeInExpo);
   const sendMessage = usePostMessageMutation();
   const theme = useTheme();
 
