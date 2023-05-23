@@ -1,0 +1,17 @@
+{
+    "font_heading": {
+        "font": "Marcellus",
+        "font_size": "36px",
+        "font_weight": 400
+    },
+    "font_text": {
+        "font": "Lato",
+        "font_size": "14px",
+        "font_weight": 400
+    },
+    "font_bold": {
+        "font": "Lato",
+        "font_size": "14px",
+        "font_weight": 700
+    }
+}

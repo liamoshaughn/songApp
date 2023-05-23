@@ -1,144 +1,160 @@
-import { Button, Typography, Grid, Box, useTheme, CircularProgress } from '@mui/material';
+import { Button, Typography, Grid, Box, useTheme, CircularProgress, Card } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { usePostMessageMutation } from '../services/api';
-import { useStore } from '../store/store';
 import { useSpring, animated, easings } from 'react-spring';
+import MusicWave from './animations/MusicWave';
 
-const animatedBoxStyles = {
-  width: '90%',
-  height: '85%',
-  position: 'absolute',
-  zIndex: '100',
-  boxShadow: '0 0 14px 14px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-};
-
-export default function SongTile({ song, name }) {
+export default function SongTile({ song, name, reset }) {
   const sendMessage = usePostMessageMutation();
   const theme = useTheme();
 
-  const AnimatedBox = animated(Box);
-  const SuccessFadeAnimation = useSpring({
+
+  const [SendAnimation, SendAnimationTrigger] = useSpring(() => ({
     from: {
-      opacity: sendMessage.isSuccess || sendMessage.isError ? 0.9 : 0,
+      left: '87%',
     },
-    to: {
-      opacity: sendMessage.isSuccess || sendMessage.isError ? 0 : 0.9,
-    },
-    config: { duration: 6000, easing: easings.easeInExpo },
+    config: { tension: 300, mass: 1, friction: 50 },
     // Reset the mutation when the animation is complete
-    onRest: () => {
-      if (sendMessage.isSuccess || sendMessage.isError) {
-        sendMessage.reset();
-      }
-    },
-  });
+  }));
 
   function handleSend() {
     sendMessage.mutate({ message: song.id, name: name });
+    SendAnimationTrigger.start({
+      from: {
+        left: '87%',
+      },
+      to: {
+        left: '0%',
+      },
+    });
   }
 
-  return (
-    <Grid
-      sx={{
-        boxShadow: 3,
-        borderRadius: '16px',
-        padding: '16px',
-        mt: '15px',
-        position: 'relative',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: "rgba(255, 255, 255, 0.12)"
-      }}
-      item
-      xs={12}
-    >
-      {/* Check if sendMessage.isSuccess is truthy */}
-      {sendMessage.isSuccess ? (
-        // Apply fadeAnimation to AnimatedBox
-        <AnimatedBox
-          style={{
-            ...animatedBoxStyles,
-            backgroundColor: theme.palette.success.main,
-            boxShadow: `${animatedBoxStyles.boxShadow} ${theme.palette.success.main}`,
-            ...SuccessFadeAnimation,
-          }}
-        >
-          <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-            Song Sent
-          </Typography>
-        </AnimatedBox>
-      ) : null}
-      {sendMessage.isLoading ? (
-        // Apply fadeAnimation to AnimatedBox
-        <AnimatedBox
-          style={{
-            ...animatedBoxStyles,
-            backgroundColor: theme.palette.info.dark,
-            boxShadow: `${animatedBoxStyles.boxShadow} ${theme.palette.info.dark}`,
-          }}
-        >
-          <CircularProgress color="info" />
-        </AnimatedBox>
-      ) : null}
+  useEffect(() => {
+    if (sendMessage.isError) {
+      SendAnimationTrigger.start({
+        from: {
+          left: '0%',
+        },
+        to: {
+          left: '87%',
+        },
+        delay: 1000,
+      });
+    }
+    if (sendMessage.isSuccess) {
+      setTimeout(() => {
+        reset();
+      }, 1500);
+    }
+  }, [sendMessage]);
 
-      {sendMessage.isError ? (
-        // Apply fadeAnimation to AnimatedBox
-        <AnimatedBox
-          style={{
-            ...animatedBoxStyles,
-            backgroundColor: theme.palette.error.main,
-            boxShadow: `${animatedBoxStyles.boxShadow} ${theme.palette.error.main}`,
-            ...SuccessFadeAnimation,
-          }}
-        >
-          <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-            Error, refresh page and try again
-          </Typography>
-        </AnimatedBox>
-      ) : null}
-      <Box
+
+
+  return (
+    <Grid item xs={12} sx={{ marginTop: '33px !important', padding: '0px !important', height: '115px' }}>
+      <Card
         sx={{
+          boxShadow: 6,
+          borderRadius: '4px',
+          padding: '10px',
+          position: 'relative',
           display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
+          width: '100%',
+          height: '90%',
         }}
       >
-        <img style={{ width: '25%' }} alt="Album Cover" src={song.album.images[1].url} />
-        <div style={{ }}>
-          <Box>
-            <Typography sx={{ fontWeight: 'bold' }}>
-              {new Date(song.album.release_date).toLocaleString('en-AU', {
-                year: 'numeric',
-              })}
-            </Typography>
-          </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            position: 'relative',
+          }}
+        >
+          <img
+            style={{ width: '75px', justifySelf: 'left', marginRight: '10px' }}
+            alt="Album Cover"
+            src={song.album.images[1].url}
+          />
+          <div style={{ textAlign: 'left' }}>
+            <Box>
+              <Typography sx={{ fontWeight: 'bold' }}>
+                {new Date(song.album.release_date).toLocaleString('en-AU', {
+                  year: 'numeric',
+                })}
+              </Typography>
+            </Box>
 
-          <Typography sx={{ typography: { sm: 'body2', xs: 'body2' } }}>{song.name}</Typography>
-          <Typography sx={{ fontWeight: 'bold' }}>
-            {song.artists
-              .map((artist) => {
-                return artist.name;
-              })
-              .join(', ')}
-          </Typography>
-        </div>
-        <div>
-          <Button
-            variant="contained"
-            sx={{ height: '30px', margin: '10px' }}
-            onClick={() => {
-              handleSend();
+            <Typography
+              sx={{
+                width: '80%',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                display: '-webkit-box',
+                WebkitLineClamp: '2',
+                WebkitBoxOrient: 'vertical',
+              }}
+            >
+              {song.name}
+            </Typography>
+            <Typography
+              sx={{
+                fontWeight: 'bold',
+                width: '165px',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {song.artists
+                .map((artist) => {
+                  return artist.name;
+                })
+                .join(', ')}
+            </Typography>
+          </div>
+          <animated.div
+            style={{
+              position: 'absolute',
+              height: '100%',
+              display: 'flex',
+              backgroundColor: theme.palette.background.paper,
+              alignItems: 'center',
+              width: '100%',
+              textAlign: 'center',
+              justifyContent: 'center',
+              ...SendAnimation,
             }}
           >
-            Request
-          </Button>
-        </div>
-      </Box>
+            <Button
+              variant="contained"
+              sx={{
+                position: 'absolute',
+                width: '85px',
+                minWidth: '85px',
+                textTransform: 'capitalize',
+                transform: 'rotate(90deg)',
+                height: '35px',
+                left: '-23px',
+              }}
+              onClick={() => {
+                handleSend();
+              }}
+            >
+              Request
+            </Button>
+            {sendMessage.isLoading && (
+              <div style={{ maxWidth: '100%', overflowX: 'clip', paddingLeft: '40px' }}>
+                <MusicWave />
+              </div>
+            )}
+            {sendMessage.isSuccess && <Typography>Success!!</Typography>}
+            {sendMessage.isError && <Typography>Error!</Typography>}
+          </animated.div>
+        </Box>
+      </Card>
     </Grid>
   );
 }

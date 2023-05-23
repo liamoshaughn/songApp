@@ -5,17 +5,17 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './routes/Home';
 import Header from './components/Header';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import themeSettings from "./theme/theme"
+import { useSettings } from './store/store';
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
+
 const queryClient = new QueryClient();
 function App() {
+  const settings = useSettings()
+  const theme = themeSettings(settings);
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <Header />
         <Routes>
