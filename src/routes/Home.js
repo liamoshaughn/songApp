@@ -55,7 +55,7 @@ function Home() {
         },
         to: {
           top: '-30px',
-          marginRight: '320px',
+          marginRight: '0px',
         },
       });
       FadeInTrigger.start({

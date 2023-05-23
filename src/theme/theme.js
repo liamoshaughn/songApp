@@ -49,7 +49,7 @@ function darkenHexColor(hexColor, darknessLevel) {
       primary: {
         main: settings.theme.colours.accent,
         light: '#42a5f5',
-        dark: darkenHexColor(settings.theme.colours.accent, 0.25),
+        dark: darkenHexColor(settings.theme.colours.accent, 0.10),
         contrastText: '#fff',
       },
       secondary: {

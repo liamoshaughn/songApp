@@ -1,5 +1,5 @@
 import { Button, Typography, Grid, Box, useTheme, CircularProgress, Card } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePostMessageMutation } from '../services/api';
 import { useSpring, animated, easings } from 'react-spring';
 import MusicWave from './animations/MusicWave';
@@ -7,6 +7,7 @@ import MusicWave from './animations/MusicWave';
 export default function SongTile({ song, name, reset }) {
   const sendMessage = usePostMessageMutation();
   const theme = useTheme();
+
 
   const [SendAnimation, SendAnimationTrigger] = useSpring(() => ({
     from: {
@@ -17,7 +18,7 @@ export default function SongTile({ song, name, reset }) {
   }));
 
   function handleSend() {
-    //sendMessage.mutate({ message: song.id, name: name });
+    sendMessage.mutate({ message: song.id, name: name });
     SendAnimationTrigger.start({
       from: {
         left: '87%',
@@ -43,9 +44,11 @@ export default function SongTile({ song, name, reset }) {
     if (sendMessage.isSuccess) {
       setTimeout(() => {
         reset();
-      }, 2000);
+      }, 3000);
     }
   }, [sendMessage]);
+
+
 
   return (
     <Grid item xs={12} sx={{ marginTop: '33px !important', padding: '0px !important', height: '115px' }}>
@@ -142,11 +145,11 @@ export default function SongTile({ song, name, reset }) {
             >
               Request
             </Button>
-            {/* {sendMessage.isLoading && ( */}
-            <div style={{ maxWidth: '100%', overflowX: 'clip', paddingLeft: '40px' }}>
-              <MusicWave />
-            </div>
-            {/* )} */}
+            {sendMessage.isLoading && (
+              <div style={{ maxWidth: '100%', overflowX: 'clip', paddingLeft: '40px' }}>
+                <MusicWave />
+              </div>
+            )}
             {sendMessage.isSuccess && <Typography>Success!!</Typography>}
             {sendMessage.isError && <Typography>Error!</Typography>}
           </animated.div>

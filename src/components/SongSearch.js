@@ -20,10 +20,12 @@ export default function SongSearch(props) {
     enter: { opacity: 1, right: '0' },
     leave: { opacity: 0, right: '100%', display: 'none' },
     config: { mass: 4, tension: 320, friction: 54 },
+    expires:true,
     trail: 130,
   });
 
   async function searchSong(song) {
+    if(song === '') return;
     const response = await searchBarSong(song, store.accessToken);
     setRows(response.tracks.items);
   }
@@ -31,7 +33,6 @@ export default function SongSearch(props) {
   function reset() {
     setRows([]);
     setSearch('');
-    transitions.stop();
     setFirstSearch(true);
   }
 
