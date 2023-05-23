@@ -2,8 +2,22 @@ import { createTheme } from '@mui/material';
 import typography from './typography.json';
 import colours from './colours.json';
 import WebFont from 'webfontloader';
+import tinycolor from 'tinycolor2';
 
 export default function themeSettings(settings) {
+
+
+function darkenHexColor(hexColor, darknessLevel) {
+
+  const color = tinycolor(hexColor);
+
+  // Darken the color by manipulating the value component
+  const darkerColor = color.darken(darknessLevel * 100);
+
+
+  return darkerColor.toHexString();
+}
+
   WebFont.load({
     google: {
       families: [
@@ -35,7 +49,7 @@ export default function themeSettings(settings) {
       primary: {
         main: settings.theme.colours.accent,
         light: '#42a5f5',
-        dark: '#1565c0',
+        dark: darkenHexColor(settings.theme.colours.accent, 0.25),
         contrastText: '#fff',
       },
       secondary: {

@@ -2,6 +2,7 @@ import { Button, Typography, Grid, Box, useTheme, CircularProgress, Card } from 
 import React, { useEffect } from 'react';
 import { usePostMessageMutation } from '../services/api';
 import { useSpring, animated, easings } from 'react-spring';
+import MusicWave from './animations/MusicWave';
 
 export default function SongTile({ song, name, reset }) {
   const sendMessage = usePostMessageMutation();
@@ -16,7 +17,7 @@ export default function SongTile({ song, name, reset }) {
   }));
 
   function handleSend() {
-    sendMessage.mutate({ message: song.id, name: name });
+    //sendMessage.mutate({ message: song.id, name: name });
     SendAnimationTrigger.start({
       from: {
         left: '87%',
@@ -57,6 +58,7 @@ export default function SongTile({ song, name, reset }) {
           display: 'flex',
           alignItems: 'center',
           width: '100%',
+          height: '90%',
         }}
       >
         <Box
@@ -140,7 +142,11 @@ export default function SongTile({ song, name, reset }) {
             >
               Request
             </Button>
-            {sendMessage.isLoading && <Typography>Sending...</Typography>}
+            {/* {sendMessage.isLoading && ( */}
+            <div style={{ maxWidth: '100%', overflowX: 'clip', paddingLeft: '40px' }}>
+              <MusicWave />
+            </div>
+            {/* )} */}
             {sendMessage.isSuccess && <Typography>Success!!</Typography>}
             {sendMessage.isError && <Typography>Error!</Typography>}
           </animated.div>
