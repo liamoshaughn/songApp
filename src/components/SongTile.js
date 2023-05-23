@@ -44,7 +44,7 @@ export default function SongTile({ song, name, reset }) {
     if (sendMessage.isSuccess) {
       setTimeout(() => {
         reset();
-      }, 3000);
+      }, 1500);
     }
   }, [sendMessage]);
 
