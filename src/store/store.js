@@ -28,3 +28,20 @@ export const useSettings = create((set) => ({
 export function addToken(token) {
   useStore.getState().addAccess(token);
 }
+
+export function addUser(user) {
+  useStore.getState().addProfile(user);
+}
+
+export const useSongStore = create((set) => ({
+  playlistId: "",
+
+  addPlaylist: (id) =>
+    set((state) => {
+      return { playlistId: id };
+    }),
+}));
+
+export function addPlaylistId(id) {
+  useSongStore.getState().addPlaylist(id);
+}

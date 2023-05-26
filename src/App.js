@@ -1,4 +1,4 @@
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
@@ -20,6 +20,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/host" element={<Home />} />
         </Routes>
       </ThemeProvider>
     </QueryClientProvider>
