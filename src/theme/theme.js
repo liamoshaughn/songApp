@@ -409,7 +409,7 @@ function darkenHexColor(hexColor, darknessLevel) {
         fontSize: '0.875rem',
         lineHeight: 1.75,
         letterSpacing: '0.02857em',
-        textTransform: 'uppercase',
+        textTransform: 'none',
       },
       caption: {
         fontFamily: `"${settings.theme.typography.font_text.font}","Roboto", "Helvetica", "Arial", sans-serif`,

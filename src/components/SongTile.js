@@ -134,7 +134,6 @@ export default function SongTile({ song, name, reset }) {
                 position: 'absolute',
                 width: '85px',
                 minWidth: '85px',
-                textTransform: 'capitalize',
                 transform: 'rotate(90deg)',
                 height: '35px',
                 left: '-23px',

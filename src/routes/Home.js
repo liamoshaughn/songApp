@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Typography, Container, TextField, IconButton } from '@mui/material';
+import { Typography, Container, TextField, IconButton, Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import SongSearch from '../components/SongSearch';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useSpring, animated, easings } from 'react-spring';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const [phase, setPhase] = useState(1);
@@ -22,7 +24,7 @@ function Home() {
             FadeNameTrigger.start({
               opacity: 1,
             });
-          },[200]);
+          }, [200]);
         },
       });
     }
@@ -64,7 +66,7 @@ function Home() {
       }}
     >
       <Typography variant="h1">Request songs</Typography>
-      {phase == 1 && (
+      {phase === 1 && (
         <animated.div style={{ ...FadeCodeAnimation }}>
           <Typography sx={{ color: theme.palette.background.paper, marginTop: '9px', marginBottom: '9px' }}>
             Enter Session Code
@@ -88,9 +90,17 @@ function Home() {
               }}
             />
           </form>
+          <Button
+            onClick={() => {
+              navigate('/host');
+            }}
+            sx={{ color: theme.palette.background.paper }}
+          >
+            Are you the host? Click here to start a session
+          </Button>
         </animated.div>
       )}
-      {phase == 2 && (
+      {phase === 2 && (
         <animated.div style={{ ...FadeNameAnimation }}>
           <Typography sx={{ color: theme.palette.background.paper, marginTop: '9px', marginBottom: '9px' }}>
             Enter your name to begin
@@ -116,9 +126,7 @@ function Home() {
           </form>
         </animated.div>
       )}
-      {phase == 3 && (
-        <SongSearch/>
-      )}
+      {phase === 3 && <SongSearch />}
     </Container>
   );
 }

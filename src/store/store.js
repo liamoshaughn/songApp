@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import colours from "../theme/colours.json"
-import typography from "../theme/typography.json"
+import colours from '../theme/colours.json';
+import typography from '../theme/typography.json';
 
 export const useStore = create((set) => ({
   accessToken: '',
@@ -15,10 +15,14 @@ export const useStore = create((set) => ({
       return { name: val };
     });
   },
+  addProfile: (user) =>
+    set((state) => {
+      return { userProfile: user };
+    }),
 }));
 
 export const useSettings = create((set) => ({
-  theme: { colours: colours, typography: typography},
+  theme: { colours: colours, typography: typography },
   addTheme: (theme) =>
     set((state) => {
       return { theme: theme };
@@ -34,7 +38,7 @@ export function addUser(user) {
 }
 
 export const useSongStore = create((set) => ({
-  playlistId: "",
+  playlistId: '',
 
   addPlaylist: (id) =>
     set((state) => {

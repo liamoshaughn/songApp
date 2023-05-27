@@ -67,7 +67,7 @@ export const callback = async () => {
       console.log(json);
       cookies.set('access_token', json.access_token, { path: '/' });
       localStorage.setItem('refresh_token', json.refresh_token);
-      window.location.href = '/';
+      window.location.href = '/host';
     })
     .catch((error) => {
       console.error(error);
