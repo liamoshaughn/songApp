@@ -3,60 +3,54 @@ import { Typography, Container, TextField, IconButton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import SongSearch from '../components/SongSearch';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useSpring, animated } from 'react-spring';
+import { useSpring, animated, easings } from 'react-spring';
 
 function Home() {
   const theme = useTheme();
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
-  const [enable, setEnable] = useState(false);
+  const [phase, setPhase] = useState(1);
 
   const handleCodeSubmit = (event) => {
     event.preventDefault();
-    // Perform your submit logic here
     if (code.trim() !== '') {
-      FadeTrigger.start({
-        from: {
-          opacity: 1,
-        },
-        to: {
-          opacity: 0,
+      FadeCodeTrigger.start({
+        opacity: 0,
+        onRest: () => {
+          setPhase(2);
+          setTimeout(() => {
+            FadeNameTrigger.start({
+              opacity: 1,
+            });
+          },[200]);
         },
       });
     }
   };
   const handleNameSubmit = (event) => {
     event.preventDefault();
-    // Perform your submit logic here
     if (name.trim() !== '') {
-      FadeTrigger.start({
-        from: {
-          opacity: 1,
-        },
-        to: {
-          opacity: 0,
+      FadeNameTrigger.start({
+        opacity: 0,
+        onRest: () => {
+          setPhase(3);
         },
       });
     }
   };
 
-  const [FadeAnimation, FadeTrigger] = useSpring(() => ({
+  const [FadeCodeAnimation, FadeCodeTrigger] = useSpring(() => ({
     from: {
       opacity: 1,
     },
-    config: { tension: 400, mass: 0.8, friction: 20 },
+    config: { duration: 600, easing: easings.easeOutCirc },
     // Reset the mutation when the animation is complete
-    onRest: () => {
-      setEnable(true);
-      FadeTrigger.start({
-        from: {
-          opacity: 0,
-        },
-        to: {
-          opacity: 1,
-        },
-      });
+  }));
+  const [FadeNameAnimation, FadeNameTrigger] = useSpring(() => ({
+    from: {
+      opacity: 0,
     },
+    config: { duration: 600, easing: easings.easeOutCirc },
   }));
 
   return (
@@ -70,15 +64,15 @@ function Home() {
       }}
     >
       <Typography variant="h1">Request songs</Typography>
-      {!enable ? (
-        <animated.div style={{ ...FadeAnimation }}>
+      {phase == 1 && (
+        <animated.div style={{ ...FadeCodeAnimation }}>
           <Typography sx={{ color: theme.palette.background.paper, marginTop: '9px', marginBottom: '9px' }}>
             Enter Session Code
           </Typography>
           <form onSubmit={handleCodeSubmit}>
             <TextField
               placeholder="Enter Session Code"
-              onChange={() => (event) => setCode(event.target.value)}
+              onChange={(event) => setCode(event.target.value)}
               variant="outlined"
               InputProps={{
                 endAdornment: (
@@ -95,8 +89,9 @@ function Home() {
             />
           </form>
         </animated.div>
-      ) : (
-        <animated.div style={{ ...FadeAnimation }}>
+      )}
+      {phase == 2 && (
+        <animated.div style={{ ...FadeNameAnimation }}>
           <Typography sx={{ color: theme.palette.background.paper, marginTop: '9px', marginBottom: '9px' }}>
             Enter your name to begin
           </Typography>
@@ -104,7 +99,7 @@ function Home() {
             <TextField
               placeholder="Enter your name"
               variant="outlined"
-              onChange={() => (event) => setName(event.target.value)}
+              onChange={(event) => setName(event.target.value)}
               InputProps={{
                 endAdornment: (
                   <IconButton type="submit" onClick={handleNameSubmit} disabled={name.trim() === ''}>
@@ -120,6 +115,9 @@ function Home() {
             />
           </form>
         </animated.div>
+      )}
+      {phase == 3 && (
+        <SongSearch/>
       )}
     </Container>
   );
