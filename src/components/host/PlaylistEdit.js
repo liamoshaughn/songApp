@@ -21,7 +21,7 @@ export default function PlaylistEdit(props) {
       {
         align: "center",
         field: "name",
-        width: "100px",
+        width: "100%",
         headerName: "Select a playlist to add",
         valueGetter: (item) => {
           return item.row.name;
@@ -65,8 +65,6 @@ export default function PlaylistEdit(props) {
   }
 
   return (
-    <Container>
       <PlaylistList list={userPlaylist} />
-    </Container>
   );
 }

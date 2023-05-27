@@ -5,6 +5,11 @@ import typography from '../theme/typography.json';
 export const useStore = create((set) => ({
   accessToken: '',
   userProfile: '',
+  currentSession:'',
+  addSession:(session) =>
+    set((state) => {
+      return { currentSession: session };
+    }),
   addAccess: (token) =>
     set((state) => {
       return { accessToken: token };
@@ -31,6 +36,10 @@ export const useSettings = create((set) => ({
 
 export function addToken(token) {
   useStore.getState().addAccess(token);
+}
+
+export function addSession(session) {
+  useStore.getState().addSession(session);
 }
 
 export function addUser(user) {

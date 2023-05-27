@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Button, Typography, Container, Grid } from '@mui/material';
-import { addPlaylistId, useStore, addToken, addUser } from '../store/store';
-import { DataGrid, GridToolbarQuickFilter } from '@mui/x-data-grid';
+import { addPlaylistId, useStore, addToken, addUser, addSession } from '../store/store';
 import PlaylistEdit from '../components/host/PlaylistEdit';
 import { getUserPlaylists, login } from '../services/api';
 import SongSearch from '../components/host/SongSearch';
@@ -11,45 +10,6 @@ import RequestSongDisplay from '../components/host/RequestSongDisplay';
 import { useTheme } from '@mui/material/styles';
 import Cookies from 'universal-cookie';
 import { getUser } from '../services/api';
-
-function SongList({ songs }) {
-  const columns = [
-    {
-      field: 'name',
-      headerName: 'Song Name',
-      width: 250,
-      valueGetter: (song) => {
-        return song.row.name;
-      },
-    },
-    {
-      field: 'add',
-      headerName: 'Add to list',
-      width: 90,
-      renderCell: (song) => (
-        <Button variant="contained" size="small" onClick={() => console.log(song.row)}>
-          +
-        </Button>
-      ),
-    },
-  ];
-
-  return (
-    <DataGrid
-      disableColumnMenu
-      disableColumnFilter
-      disableColumnSelector
-      disableDensitySelector
-      rows={songs}
-      columns={columns}
-      getRowId={(row) => {
-        return row.id;
-      }}
-      slots={{ toolbar: GridToolbarQuickFilter }}
-      autoHeight
-    />
-  );
-}
 
 async function getUserProfile(token) {
   const request = await getUser(token);
@@ -61,15 +21,14 @@ export default function Host() {
   const theme = useTheme();
   const store = useStore();
   const user = store.userProfile;
-  const [playlists, setPLaylists] = useState(null);
+  const [playlists, setPlaylists] = useState(null);
   const [chosen, setChosen] = useState('No Playlist Selected');
   const cookies = new Cookies();
-
 
   async function getPlaylists() {
     const playlistData = await getUserPlaylists(user.id, 0);
 
-    setPLaylists(playlistData);
+    setPlaylists(playlistData);
   }
 
   function setPlaylistData(data) {
@@ -78,12 +37,15 @@ export default function Host() {
   }
 
   useEffect(() => {
-    getPlaylists();
+    if (user) {
+      getPlaylists();
+    }
   }, [user]);
 
   useEffect(() => {
     addToken(cookies.get('access_token'));
-    getUserProfile(cookies.get('access_token'));
+    getUserProfile(cookies.get('access_token'));       
+    addSession(cookies.get('current_session'));
   }, []);
 
   return (
@@ -91,8 +53,9 @@ export default function Host() {
       sx={{ height: '100vh', display: 'flex', justifyContent: 'center', flexFlow: 'column', alignItems: 'center' }}
       maxWidth="xl"
     >
-      {store.userProfile ? (
-        <>
+      {user ? (
+        <div>
+          <Typography variant={'h5'}>Your session code: {store.currentSession}</Typography>
           <Typography variant="h3" textAlign={'center'}>
             Playlist Management
           </Typography>
@@ -112,7 +75,7 @@ export default function Host() {
               <SongSearch />
             </Grid>
           </Grid>
-        </>
+        </div>
       ) : (
         <>
           <Typography sx={{ color: theme.palette.background.paper }}>Connect a Spotify account to begin</Typography>

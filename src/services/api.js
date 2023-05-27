@@ -4,7 +4,6 @@ import { useMutation } from '@tanstack/react-query';
 import { fc } from '../firebase/firebase';
 import { httpsCallable } from 'firebase/functions';
 
-
 const cookies = new Cookies();
 // Create an Axios instance
 const SpotifyApi = axios.create({
@@ -86,6 +85,17 @@ export const login = async () => {
     });
 };
 
+export const createSession = async () => {
+  const createSession = httpsCallable(fc, 'createSession');
+  return await createSession()
+    .then((result) => {
+      return result.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 export const refreshSpotifyAccess = async (refreshToken) => {
   const refreshSpotifyAccessToken = httpsCallable(fc, 'refreshSpotifyAccessToken');
 
@@ -148,7 +158,7 @@ export const addToQueue = async (songUri) => {
     return response.data;
   } catch (error) {
     console.log(error);
-      throw new Error('Failed to add track to queue');
+    throw new Error('Failed to add track to queue');
   }
 };
 
@@ -158,8 +168,6 @@ export const useQueueMutation = () =>
       return addToQueue(message);
     },
   });
-
-
 
 export const searchBarSong = async (data) => {
   const query = data;
@@ -208,7 +216,7 @@ export const sendMessage = async ({ message, name }) => {
     })
     .catch((error) => {
       console.log('error');
-      throw new Error('failed to add song')
+      throw new Error('failed to add song');
     });
 };
 

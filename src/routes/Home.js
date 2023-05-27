@@ -15,6 +15,7 @@ function Home() {
 
   const handleCodeSubmit = (event) => {
     event.preventDefault();
+
     if (code.trim() !== '') {
       FadeCodeTrigger.start({
         opacity: 0,
@@ -31,6 +32,8 @@ function Home() {
   };
   const handleNameSubmit = (event) => {
     event.preventDefault();
+    const newURL = `?session=${code}&name=${name}`; // Modify the URL string as needed
+    navigate(newURL);
     if (name.trim() !== '') {
       FadeNameTrigger.start({
         opacity: 0,
