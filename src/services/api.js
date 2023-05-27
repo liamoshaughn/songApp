@@ -205,11 +205,11 @@ export const searchSongs = async (data, token) => {
   return response.data;
 };
 
-export const sendMessage = async ({ message, name }) => {
+export const sendMessage = async ({ message, name, session }) => {
   // Call the Firebase Function using Axios
 
-  const sendMessageFirestore = httpsCallable(fc, 'addMessage');
-  return await sendMessageFirestore({ trackID: message, name: name })
+  const sendMessageFirestore = httpsCallable(fc, 'addRequest');
+  return await sendMessageFirestore({ trackID: message, name: name, session: session })
     .then((result) => {
       console.log(result.data);
       return result.data.access_token;

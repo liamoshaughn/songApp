@@ -1,33 +1,48 @@
 import React, { useState } from 'react';
-import { Typography, Container, TextField, IconButton, Button } from '@mui/material';
+import { Typography, Container, TextField, IconButton, Button, CircularProgress, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import SongSearch from '../components/SongSearch';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useSpring, animated, easings } from 'react-spring';
 import { useNavigate } from 'react-router-dom';
+import { db } from '../firebase/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 function Home() {
+  const queryParameters = new URLSearchParams(window.location.search);
   const theme = useTheme();
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [code, setCode] = useState('');
-  const [phase, setPhase] = useState(1);
+  const [name, setName] = useState(queryParameters.get('name') ? queryParameters.get('name') : '');
+  const [code, setCode] = useState(queryParameters.get('session') ? queryParameters.get('session') : '');
+  const [phase, setPhase] = useState(queryParameters.get('session') ? 3 : 1);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(false);
 
-  const handleCodeSubmit = (event) => {
+  const handleCodeSubmit = async (event) => {
     event.preventDefault();
+    setSubmitting(true);
 
     if (code.trim() !== '') {
-      FadeCodeTrigger.start({
-        opacity: 0,
-        onRest: () => {
-          setPhase(2);
-          setTimeout(() => {
-            FadeNameTrigger.start({
-              opacity: 1,
-            });
-          }, [200]);
-        },
-      });
+      const messageRef = doc(db, 'sessions', code);
+      const docSnapshot = await getDoc(messageRef);
+      if (docSnapshot._document !== null) {
+        FadeCodeTrigger.start({
+          opacity: 0,
+          onRest: () => {
+            setPhase(2);
+            setTimeout(() => {
+              FadeNameTrigger.start({
+                opacity: 1,
+              });
+            }, [200]);
+          },
+        });
+      }else{
+        setSubmitting(false)
+      setError(true);
+        setTimeout(() => {
+          setError(false);
+        }, 3000);}
     }
   };
   const handleNameSubmit = (event) => {
@@ -79,8 +94,9 @@ function Home() {
               placeholder="Enter Session Code"
               onChange={(event) => setCode(event.target.value)}
               variant="outlined"
+              error ={error}
               InputProps={{
-                endAdornment: (
+                endAdornment: submitting ? (<Box sx={{display:'flex'}}><CircularProgress/></Box>) : (
                   <IconButton type="submit" onClick={handleCodeSubmit} disabled={code.trim() === ''}>
                     <ArrowForwardIcon />
                   </IconButton>

@@ -7,6 +7,8 @@ import MusicWave from './animations/MusicWave';
 export default function SongTile({ song, name, reset }) {
   const sendMessage = usePostMessageMutation();
   const theme = useTheme();
+  const queryParameters = new URLSearchParams(window.location.search);
+  
 
 
   const [SendAnimation, SendAnimationTrigger] = useSpring(() => ({
@@ -18,7 +20,7 @@ export default function SongTile({ song, name, reset }) {
   }));
 
   function handleSend() {
-    sendMessage.mutate({ message: song.id, name: name });
+    sendMessage.mutate({ message: song.id, name: name, session: queryParameters.get('session') });
     SendAnimationTrigger.start({
       from: {
         left: '87%',
