@@ -10,6 +10,7 @@ import RequestSongDisplay from '../components/host/RequestSongDisplay';
 import { useTheme } from '@mui/material/styles';
 import Cookies from 'universal-cookie';
 import { getUser } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 async function getUserProfile(token) {
   const request = await getUser(token);
@@ -20,6 +21,7 @@ async function getUserProfile(token) {
 export default function Host() {
   const theme = useTheme();
   const store = useStore();
+  const navigate = useNavigate();
   const user = store.userProfile;
 
   const cookies = new Cookies();
@@ -35,31 +37,68 @@ export default function Host() {
       {user ? (
         <div style={{ width: '100%' }}>
           <div style={{ display: 'flex' }}>
-            <Typography variant="subtitle1">Your session code: {store.currentSession}</Typography>
-            <Typography variant="subtitle1" sx={{marginLeft:'auto'}}>Current User: {user.display_name}</Typography>
+            <Typography variant="subtitle1">
+              Your session code: <Typography variant="h1">{store.currentSession}</Typography>
+            </Typography>
+            <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
+              <Typography variant="subtitle1">Current User: </Typography>
+               <Typography sx={{marginBottom:'8px'}} variant="subtitle1">{user.display_name}</Typography>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  const cookieKeys = Object.keys(cookies.getAll());
+
+                  cookieKeys.forEach((cookieKey) => {
+                    cookies.remove(cookieKey);
+                  });
+                  localStorage.removeItem('refresh_token');
+                  navigate('/');
+                  window.location.reload();
+                }}
+                sx={{ color: theme.palette.background.paper }}
+              >
+                Logout
+              </Button>
+            </div>
           </div>
 
-          <Typography variant="h1" textAlign={'center'} sx={{ marginBottom: '10vh' }}>
+          <Typography variant="h1" textAlign={'center'} sx={{ marginBottom: '5vh' }}>
             Host Management
           </Typography>
 
           <Grid
             container
-            spacing={4}
-            sx={{ width: '100%', height: '100%', justifyContent: 'center', paddingY: '40px' }}
+
+            sx={{ width: '100%', height: '100%', justifyContent: 'center', margin: 0, padding: 0 }}
           >
-            <Grid item xs={4} sx={{ minWidth: '400px' }}>
-              <Box   sx={{
+            <Grid
+              item
+              xs={5}
+              sx={{
+                minWidth: '300px',
+                margin: 0,
+                padding: '0px !important',
+              }}
+            >
+              <Box
+                sx={{
                   backgroundColor: theme.palette.background.paper,
                   textAlign: 'center',
                   padding: '10px',
                   height: '75vh',
                   overflow: 'auto',
                   borderRadius: '4px',
-                }}>
-              <RequestSongDisplay /></Box>
+                }}
+              >
+                <RequestSongDisplay />
+              </Box>
             </Grid>
-            <Grid item xs={4} sx={{ minWidth: '400px' }}>
+            <Grid
+              item
+              xs={0.5}
+              sx={{ margin: 0, padding: '0px !important', [theme.breakpoints.down(650)]: { display: 'none' } }}
+            ></Grid>
+            <Grid item xs={5} sx={{ minWidth: '300px', margin: 0, padding: '0px !important' }}>
               <Box
                 sx={{
                   backgroundColor: theme.palette.background.paper,
@@ -77,12 +116,14 @@ export default function Host() {
           </Grid>
         </div>
       ) : (
-        <>
-          <Typography sx={{ color: theme.palette.background.paper }}>Connect a Spotify account to begin</Typography>
+        <div style={{ marginTop: 'auto', marginBottom: 'auto', textAlign: 'center' }}>
+          <Typography sx={{ color: theme.palette.background.paper, marginBottom: '10px' }}>
+            Connect a Spotify account to begin
+          </Typography>
           <Button variant="contained" onClick={login}>
             Login with Spotify
           </Button>
-        </>
+        </div>
       )}
     </Container>
   );

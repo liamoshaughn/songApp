@@ -37,12 +37,13 @@ function Home() {
             }, [200]);
           },
         });
-      }else{
-        setSubmitting(false)
-      setError(true);
+      } else {
+        setSubmitting(false);
+        setError(true);
         setTimeout(() => {
           setError(false);
-        }, 3000);}
+        }, 3000);
+      }
     }
   };
   const handleNameSubmit = (event) => {
@@ -84,6 +85,23 @@ function Home() {
         paddingTop: '20px',
       }}
     >
+      {' '}
+      <Button
+        onClick={() => {
+          navigate('/');
+          window.location.reload();
+        }}
+        variant="outlined"
+        sx={{
+          borderColor: theme.palette.background.paper,
+          color: theme.palette.background.paper,
+          position: 'absolute',
+          left: '10px',
+        }}
+      >
+        restart
+      </Button>
+      {phase === 3 ? <Typography variant="subtitle1">Current Session: {code}</Typography> : null}
       <Typography variant="h1">Request songs</Typography>
       {phase === 1 && (
         <animated.div style={{ ...FadeCodeAnimation }}>
@@ -95,9 +113,13 @@ function Home() {
               placeholder="Enter Session Code"
               onChange={(event) => setCode(event.target.value)}
               variant="outlined"
-              error ={error}
+              error={error}
               InputProps={{
-                endAdornment: submitting ? (<Box sx={{display:'flex'}}><CircularProgress/></Box>) : (
+                endAdornment: submitting ? (
+                  <Box sx={{ display: 'flex' }}>
+                    <CircularProgress />
+                  </Box>
+                ) : (
                   <IconButton type="submit" onClick={handleCodeSubmit} disabled={code.trim() === ''}>
                     <ArrowForwardIcon />
                   </IconButton>

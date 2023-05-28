@@ -53,7 +53,7 @@ export default function SongTileHost({ song, reset, removeSong }) {
 
 
   return (
-    <Grid item xs={12} sx={{ marginTop: '33px !important', padding: '0px !important', height: '115px' }}>
+    <Grid item xs={12} sx={{ maxWidth:'400px !important', marginTop: '33px !important', padding: '0px !important', height: '115px' }}>
       <Card
         sx={{
           boxShadow: 6,

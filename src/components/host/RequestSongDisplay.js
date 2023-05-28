@@ -61,7 +61,7 @@ const RequestSongDisplay = () => {
   }, [session]);
 
   return (
-    <Grid container spacing={0} sx={{ justifyContent: 'center', textAlign: 'center', margin: 0,  width:'100%',padding:'10px' }}>
+    <Grid container spacing={0} sx={{ padding:0,justifyContent: 'center', textAlign: 'center', margin: 0,  width:'100%',padding:'10px' }}>
       {session !== '' && session !==undefined ? (
         <>
           <Grid sx={{ marginBottom: '15px' }} item xs={12}>
