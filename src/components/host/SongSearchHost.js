@@ -2,15 +2,16 @@
 
 import { useState } from 'react';
 
-import { Button, Typography, Container, Grid, TextField, InputAdornment } from '@mui/material';
+import { Button, Typography, Container, Grid, TextField, InputAdornment, useTheme } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { searchBarSong } from '../../services/api';
 import { DataGrid, GridToolbarQuickFilter } from '@mui/x-data-grid';
 import { useStore } from '../../store/store';
-import SongTile from '../SongTile';
+import SongTileHost from './SongTileHost';
 
-export default function SongSearch({ addTracks }) {
+export default function SongSearchHost({ addTracks }) {
   const store = useStore();
+  const theme = useTheme();
   const [rows, setRows] = useState([]);
 
   async function searchSong(song) {
@@ -19,7 +20,7 @@ export default function SongSearch({ addTracks }) {
   }
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} sx={{margin:0, width:'100%', justifyContent:"center"}}>
       <Grid sx={{mb:'15px'}} item xs={12}>
         <TextField
           onChange={(event) => searchSong(event.target.value)}
@@ -33,7 +34,7 @@ export default function SongSearch({ addTracks }) {
         ></TextField>
       </Grid>
       {rows.map((song, key) => {
-        return <SongTile key={key} song={song} addTracks={addTracks} />;
+        return <SongTileHost key={key} song={song} addTracks={addTracks} />;
       })}
     </Grid>
   );

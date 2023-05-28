@@ -82,7 +82,7 @@ export default function SongSearch(props) {
       </Grid>
       {transitions((style, item, index) => (
         <animated.div key={item.key} style={{ ...style, width: '100%', position: 'relative',display: 'block'}}>
-          {item && <SongTile song={item} name={props.name} reset={reset} />}
+          {item && <SongTile song={item} reset={reset} />}
         </animated.div>
       ))}
     </Grid>

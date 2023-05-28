@@ -1,7 +1,7 @@
-import { Typography, Grid, Button } from '@mui/material';
+import { Typography, Grid, Button, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useStore, addSession } from '../../store/store';
-import SongTile from '../SongTile';
+import SongTileHost from './SongTileHost';
 import { doc, onSnapshot, updateDoc, deleteField } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import { createSession } from '../../services/api';
@@ -12,6 +12,7 @@ const RequestSongDisplay = () => {
   const [messages, setMessages] = useState([]);
   const store = useStore();
   const [session, setSession] = useState(store.currentSession);
+  const theme = useTheme();
   
 
   async function handleCreateSession() {
@@ -60,25 +61,24 @@ const RequestSongDisplay = () => {
   }, [session]);
 
   return (
-    <Grid container spacing={2} sx={{ justifyContent: 'center', textAlign: 'center' }}>
+    <Grid container spacing={0} sx={{ justifyContent: 'center', textAlign: 'center', margin: 0,  width:'100%',padding:'10px' }}>
       {session !== '' && session !==undefined ? (
         <>
-          <Grid sx={{ mb: '15px' }} item xs={12}>
+          <Grid sx={{ marginBottom: '15px' }} item xs={12}>
             <Typography variant={'h5'}>Songs Requested</Typography>
           </Grid>
           {messages.length > 0 ? (
             messages.map((song, idx) => {
-              return <SongTile key={idx} song={song.track} names={song.names} removeSong={() => removeSong(idx)} />;
+              return <SongTileHost key={idx} song={song.track} names={song.names} removeSong={() => removeSong(idx)} />;
             })
           ) : (
             <Typography>No new messages</Typography>
           )}
         </>
       ) : (
-        <>
-          <Typography>Create a session</Typography>
-          <Button onClick={() => handleCreateSession()}>Create Session</Button>
-        </>
+
+          <Button variant="contained" onClick={() => handleCreateSession()}>Create Session</Button>
+
       )}
     </Grid>
   );

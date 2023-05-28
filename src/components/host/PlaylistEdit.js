@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 
-import { Button, Typography, Container, Grid } from "@mui/material";
+import { Button, Typography, Container, Grid, useTheme } from "@mui/material";
 import { useStore } from "../../store/store";
 import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 
 export default function PlaylistEdit(props) {
+  const theme = useTheme();
   const [userPlaylist, setUserSongs] = useState(() => {
     var array = [];
     const list = props.playlists.items;
@@ -44,11 +45,23 @@ export default function PlaylistEdit(props) {
       <DataGrid
         sx={{
           border: 0,
-          height: "50vh",
+          height: "75vh",
           width: "100%",
+          backgroundColor:theme.palette.background.paper,
+          padding: '10px',
           "& .MuiDataGrid-withBorderColor": {
             borderColor: "transparent",
           },
+          "& .css-rtrcn9-MuiTablePagination-root .MuiTablePagination-selectLabel": {
+            display:'none',
+          },
+          "& .css-1bt9270-MuiInputBase-root-MuiTablePagination-select": {
+            display:'none',
+          },
+          "& .css-rtrcn9-MuiTablePagination-root:last-child": {
+            marginRight:'auto',
+          }  
+          
         }}
         disableColumnMenu
         disableColumnFilter

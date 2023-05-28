@@ -1,6 +1,5 @@
 import { createTheme } from '@mui/material';
 import typography from './typography.json';
-import colours from './colours.json';
 import WebFont from 'webfontloader';
 import tinycolor from 'tinycolor2';
 
@@ -380,6 +379,7 @@ function darkenHexColor(hexColor, darknessLevel) {
         fontSize: '1rem',
         lineHeight: 1.75,
         letterSpacing: '0.00938em',
+        color: settings.theme.colours.primary,
       },
       subtitle2: {
         fontFamily: `"${settings.theme.typography.font_text.font}","Roboto", "Helvetica", "Arial", sans-serif`,

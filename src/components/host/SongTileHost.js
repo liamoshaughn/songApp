@@ -1,13 +1,12 @@
 import { Button, Typography, Grid, Box, useTheme, CircularProgress, Card } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { usePostMessageMutation } from '../services/api';
+import { useQueueMutation } from '../../services/api';
 import { useSpring, animated, easings } from 'react-spring';
-import MusicWave from './animations/MusicWave';
+import MusicWave from '../animations/MusicWave';
 
-export default function SongTile({ song, reset }) {
-  const sendMessage = usePostMessageMutation();
+export default function SongTileHost({ song, reset, removeSong }) {
+  const addQueue = useQueueMutation();
   const theme = useTheme();
-  const queryParameters = new URLSearchParams(window.location.search);
   
 
 
@@ -20,7 +19,7 @@ export default function SongTile({ song, reset }) {
   }));
 
   function handleSend() {
-    sendMessage.mutate({ message: song.id, name: queryParameters.get('name'), session: queryParameters.get('session') });
+    addQueue.mutate(song.uri);
     SendAnimationTrigger.start({
       from: {
         left: '87%',
@@ -32,7 +31,7 @@ export default function SongTile({ song, reset }) {
   }
 
   useEffect(() => {
-    if (sendMessage.isError) {
+    if (addQueue.isError) {
       SendAnimationTrigger.start({
         from: {
           left: '0%',
@@ -43,12 +42,13 @@ export default function SongTile({ song, reset }) {
         delay: 1000,
       });
     }
-    if (sendMessage.isSuccess) {
+    if (addQueue.isSuccess) {
       setTimeout(() => {
-        reset();
+        if(removeSong) removeSong(song);
+        else reset();     
       }, 1500);
     }
-  }, [sendMessage]);
+  }, [addQueue]);
 
 
 
@@ -144,15 +144,15 @@ export default function SongTile({ song, reset }) {
                 handleSend();
               }}
             >
-              Request
+              Queue
             </Button>
-            {sendMessage.isLoading && (
+            {addQueue.isLoading && (
               <div style={{ maxWidth: '100%', overflowX: 'clip', paddingLeft: '40px' }}>
                 <MusicWave />
               </div>
             )}
-            {sendMessage.isSuccess && <Typography>Success!!</Typography>}
-            {sendMessage.isError && <Typography>Error!</Typography>}
+            {addQueue.isSuccess && <Typography>Success!!</Typography>}
+            {addQueue.isError && <Typography>Error!</Typography>}
           </animated.div>
         </Box>
       </Card>
