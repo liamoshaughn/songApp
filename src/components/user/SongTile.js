@@ -1,8 +1,8 @@
 import { Button, Typography, Grid, Box, useTheme, CircularProgress, Card } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { usePostMessageMutation } from '../services/api';
+import { usePostMessageMutation } from '../../services/api';
 import { useSpring, animated, easings } from 'react-spring';
-import MusicWave from './animations/MusicWave';
+import MusicWave from '../animations/MusicWave';
 
 export default function SongTile({ song, reset }) {
   const sendMessage = usePostMessageMutation();

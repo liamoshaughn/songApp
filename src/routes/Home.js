@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Typography, Container, TextField, IconButton, Button, CircularProgress, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import SongSearch from '../components/SongSearch';
+import SongSearch from '../components/user/SongSearch';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useSpring, animated, easings } from 'react-spring';
 import { useNavigate } from 'react-router-dom';
@@ -81,6 +81,7 @@ function Home() {
         alignItems: 'center',
         textAlign: 'center',
         position: 'relative',
+        paddingTop: '20px',
       }}
     >
       <Typography variant="h1">Request songs</Typography>
