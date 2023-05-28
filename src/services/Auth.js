@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {  useEffect } from 'react';
 
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Container, Typography } from '@mui/material';
 import Cookies from 'universal-cookie';
 import { addToken, addUser, addSession } from '../store/store';

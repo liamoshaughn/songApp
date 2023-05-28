@@ -1,5 +1,5 @@
 import { useTheme } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useTrail, animated } from 'react-spring';
 
 const MusicWave = () => {

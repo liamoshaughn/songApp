@@ -2,10 +2,9 @@
 
 import { useState } from 'react';
 
-import { Button, Typography, Container, Grid, TextField, InputAdornment, useTheme } from '@mui/material';
+import {  Grid, TextField, InputAdornment, useTheme } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { searchBarSong } from '../../services/api';
-import { DataGrid, GridToolbarQuickFilter } from '@mui/x-data-grid';
 import { useStore } from '../../store/store';
 import SongTileHost from './SongTileHost';
 

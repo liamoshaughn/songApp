@@ -1,7 +1,7 @@
-import { Button, Typography, Grid, Box, useTheme, CircularProgress, Card } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { Button, Typography, Grid, Box, useTheme, Card } from '@mui/material';
+import React, { useEffect, } from 'react';
 import { usePostMessageMutation } from '../../services/api';
-import { useSpring, animated, easings } from 'react-spring';
+import { useSpring, animated } from 'react-spring';
 import MusicWave from '../animations/MusicWave';
 
 export default function SongTile({ song, reset }) {

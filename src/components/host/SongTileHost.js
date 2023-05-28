@@ -1,5 +1,5 @@
-import { Button, Typography, Grid, Box, useTheme, CircularProgress, Card } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { Button, Typography, Grid, Box, useTheme, Card } from '@mui/material';
+import React, { useEffect } from 'react';
 import { useQueueMutation } from '../../services/api';
 import { useSpring, animated, easings } from 'react-spring';
 import MusicWave from '../animations/MusicWave';

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Typography, Grid, TextField, InputAdornment, useTheme } from '@mui/material';
+import {  useState } from 'react';
+import {  Grid, TextField, InputAdornment, useTheme } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useTransition, animated } from 'react-spring';
 import { searchBarSong } from '../../services/api';
