@@ -7,16 +7,25 @@ import { useSpring, animated, easings } from 'react-spring';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../firebase/firebase';
 import { doc, getDoc } from 'firebase/firestore';
+import { getClientAuth } from "../services/api";
+import Cookies from 'universal-cookie';
 
 function Home() {
   const queryParameters = new URLSearchParams(window.location.search);
   const theme = useTheme();
+  const cookies = new Cookies()
   const navigate = useNavigate();
   const [name, setName] = useState(queryParameters.get('name') ? queryParameters.get('name') : '');
   const [code, setCode] = useState(queryParameters.get('session') ? queryParameters.get('session') : '');
   const [phase, setPhase] = useState(queryParameters.get('session') ? 3 : 1);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(false);
+
+  async function getToken() {
+    const token = await getClientAuth();
+    cookies.set('access_token', token, { path: '/' });
+    return token;
+  }
 
   const handleCodeSubmit = async (event) => {
     event.preventDefault();
@@ -26,6 +35,7 @@ function Home() {
       const messageRef = doc(db, 'sessions', code);
       const docSnapshot = await getDoc(messageRef);
       if (docSnapshot._document !== null) {
+        getToken();
         FadeCodeTrigger.start({
           opacity: 0,
           onRest: () => {
@@ -90,6 +100,7 @@ function Home() {
           <Button
             onClick={() => {
               navigate('/');
+              cookies.remove('access_token');
               window.location.reload();
             }}
             variant="outlined"
