@@ -14,9 +14,10 @@ const firebaseConfig = {
   projectId: "songapp-384011",
   storageBucket: "songapp-384011.appspot.com",
   messagingSenderId: "415269484901",
-  appId: "1:415269484901:web:3987c1e55b71173b5c098c",
-  measurementId: "G-X3KB49MSQ6",
+  appId: "1:415269484901:web:e048e2c81a45a9bf5c098c",
+  measurementId: "G-58VZGLP8Z3"
 };
+
 
 // Initialize Firebase
 // Initialize Firebase

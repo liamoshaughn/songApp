@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "songappclient",
+    "site": "songrequest",
     "public": "build",
     "ignore": [
       "firebase.json",

@@ -85,23 +85,26 @@ function Home() {
         paddingTop: '20px',
       }}
     >
-      {' '}
-      <Button
-        onClick={() => {
-          navigate('/');
-          window.location.reload();
-        }}
-        variant="outlined"
-        sx={{
-          borderColor: theme.palette.background.paper,
-          color: theme.palette.background.paper,
-          position: 'absolute',
-          left: '10px',
-        }}
-      >
-        restart
-      </Button>
-      {phase === 3 ? <Typography variant="subtitle1">Current Session: {code}</Typography> : null}
+      {phase === 3 ? (
+        <>
+          <Button
+            onClick={() => {
+              navigate('/');
+              window.location.reload();
+            }}
+            variant="outlined"
+            sx={{
+              borderColor: theme.palette.background.paper,
+              color: theme.palette.background.paper,
+              position: 'absolute',
+              left: '10px',
+            }}
+          >
+            restart
+          </Button>
+          <Typography sx={{marginTop:'10px'}} variant="subtitle1">Current Session: {code}</Typography>
+        </>
+      ) : null}
       <Typography variant="h1">Request songs</Typography>
       {phase === 1 && (
         <animated.div style={{ ...FadeCodeAnimation }}>

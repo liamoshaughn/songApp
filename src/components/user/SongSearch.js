@@ -51,7 +51,7 @@ export default function SongSearch(props) {
   };
 
   return (
-    <Grid container spacing={2} sx={{ margin: 0 }}>
+    <Grid container spacing={2} sx={{ margin: 0, maxWidth: '500px !important' }}>
       <Grid item xs={12} sx={{ paddingLeft: '0 !important' }}>
       <form onSubmit={handleSubmit}>
         <TextField
