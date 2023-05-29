@@ -1,6 +1,6 @@
 {
-  "short_name": "Client App",
-  "name": "Song App Client",
+  "short_name": "Song Request",
+  "name": "Song Request",
   "icons": [
     {
       "src": "favicon.ico",
