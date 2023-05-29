@@ -6,15 +6,33 @@ import { httpsCallable } from 'firebase/functions';
 
 const cookies = new Cookies();
 // Create an Axios instance
-const SpotifyApi = axios.create({
+const HostSpotifyApi = axios.create({
   baseURL: 'https://api.spotify.com/v1',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
+const UserSpotifyApi = axios.create({
+  baseURL: 'https://api.spotify.com/v1',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+
 // Add request interceptor
-SpotifyApi.interceptors.request.use(
+HostSpotifyApi.interceptors.request.use(
+  (config) => {
+    const accessToken = cookies.get('access_token');
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+UserSpotifyApi.interceptors.request.use(
   (config) => {
     const accessToken = cookies.get('access_token');
     if (accessToken) {
@@ -26,7 +44,34 @@ SpotifyApi.interceptors.request.use(
 );
 
 // Add response interceptor
-SpotifyApi.interceptors.response.use(
+UserSpotifyApi.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const newAccessToken = await getClientAuth();
+
+        // Update the access token and retry the original request
+        cookies.set('access_token', newAccessToken, { path: '/' });
+        const newRequest = { ...originalRequest };
+        newRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        return UserSpotifyApi(newRequest);
+      } catch (error) {
+        // Handle error
+        console.log(error);
+        return Promise.reject(error);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+HostSpotifyApi.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
@@ -42,7 +87,7 @@ SpotifyApi.interceptors.response.use(
         cookies.set('access_token', newAccessToken, { path: '/' });
         const newRequest = { ...originalRequest };
         newRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return SpotifyApi(newRequest);
+        return HostSpotifyApi(newRequest);
       } catch (error) {
         // Handle error
         console.log(error);
@@ -109,14 +154,14 @@ export const refreshSpotifyAccess = async (refreshToken) => {
 };
 
 export const getUser = async () => {
-  const response = await SpotifyApi.get('/me').catch(function (error) {
+  const response = await HostSpotifyApi.get('/me').catch(function (error) {
     return error;
   });
   return response.data;
 };
 
 export const getUserPlaylists = async (data, offset) => {
-  const response = await SpotifyApi.get(`/users/${data}/playlists?limit=49&offset=${offset}`).catch(function (error) {
+  const response = await HostSpotifyApi.get(`/users/${data}/playlists?limit=49&offset=${offset}`).catch(function (error) {
     return error;
   });
 
@@ -137,7 +182,7 @@ export const getUserPlaylists = async (data, offset) => {
 
 export const addToPlaylist = async (playlistId, songUri) => {
   try {
-    const response = await SpotifyApi.post('/playlists/' + playlistId + '/tracks?uris=' + songUri);
+    const response = await HostSpotifyApi.post('/playlists/' + playlistId + '/tracks?uris=' + songUri);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -154,7 +199,7 @@ export const usePlaylistMutation = () =>
 
 export const addToQueue = async (songUri) => {
   try {
-    const response = await SpotifyApi.post('/me/player/queue?uri=' + songUri);
+    const response = await HostSpotifyApi.post('/me/player/queue?uri=' + songUri);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -172,7 +217,7 @@ export const useQueueMutation = () =>
 export const searchBarSong = async (data) => {
   const query = data;
 
-  const response = await SpotifyApi.get(
+  const response = await UserSpotifyApi.get(
     '/search?include_external=audio&q="track:' + query + '"&type=track&limit=10&market=AU'
   ).catch(function (error) {
     return error;
