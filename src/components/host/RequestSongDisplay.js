@@ -2,7 +2,7 @@ import { Typography, Grid, Button, useTheme, CircularProgress } from '@mui/mater
 import React, { useEffect, useState } from 'react';
 import { useStore, addSession } from '../../store/store';
 import SongTileHost from './SongTileHost';
-import { doc, onSnapshot, updateDoc, deleteField } from 'firebase/firestore';
+import { doc, onSnapshot, updateDoc, deleteField, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import { createSession } from '../../services/api';
 import Cookies from 'universal-cookie';
@@ -41,8 +41,12 @@ const RequestSongDisplay = () => {
     setMessages(updatedMessages);
   };
 
-  useEffect(() => {
-    if (session !== '' && session !== undefined) {
+  async function checkSession() {
+
+    const sessionsRef = doc(db, "sessions", session);
+    const sessionSnapshot = await getDoc(sessionsRef);
+    console.log(sessionSnapshot.exists());
+    if (sessionSnapshot.exists()) {
       const unsub = onSnapshot(doc(db, 'sessions', session), (doc) => {
         console.log('Current data: ', doc.data().requested);
         var resultsArray = [];
@@ -57,7 +61,16 @@ const RequestSongDisplay = () => {
           setMessages(resultsArray);
         }
       });
+    } else {
+      console.log('trigger');
+      setSession('');
+      addSession('');
+      cookies.remove('current_session');
     }
+  }
+
+  useEffect(() => {
+    checkSession();
   }, [session]);
 
   return (
@@ -90,7 +103,7 @@ const RequestSongDisplay = () => {
         >
           <Button
             variant="contained"
-            sx={{marginBottom:"15px"}}
+            sx={{ marginBottom: '15px' }}
             onClick={() => {
               setEnable(true);
               handleCreateSession();
