@@ -1,4 +1,4 @@
-import { Typography, Grid, Button, useTheme } from '@mui/material';
+import { Typography, Grid, Button, useTheme, CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useStore, addSession } from '../../store/store';
 import SongTileHost from './SongTileHost';
@@ -13,7 +13,7 @@ const RequestSongDisplay = () => {
   const store = useStore();
   const [session, setSession] = useState(store.currentSession);
   const theme = useTheme();
-  
+  const [enable, setEnable] = useState(false);
 
   async function handleCreateSession() {
     const expirationDate = new Date();
@@ -42,7 +42,7 @@ const RequestSongDisplay = () => {
   };
 
   useEffect(() => {
-    if (session !== '' && session !==undefined) {
+    if (session !== '' && session !== undefined) {
       const unsub = onSnapshot(doc(db, 'sessions', session), (doc) => {
         console.log('Current data: ', doc.data().requested);
         var resultsArray = [];
@@ -61,8 +61,12 @@ const RequestSongDisplay = () => {
   }, [session]);
 
   return (
-    <Grid container spacing={0} sx={{ padding:0,justifyContent: 'center', textAlign: 'center', margin: 0,  width:'100%',padding:'10px' }}>
-      {session !== '' && session !==undefined ? (
+    <Grid
+      container
+      spacing={0}
+      sx={{ padding: 0, justifyContent: 'center', textAlign: 'center', margin: 0, width: '100%', padding: '10px' }}
+    >
+      {session !== '' && session !== undefined ? (
         <>
           <Grid sx={{ marginBottom: '15px' }} item xs={12}>
             <Typography variant={'h5'}>Songs Requested</Typography>
@@ -76,9 +80,26 @@ const RequestSongDisplay = () => {
           )}
         </>
       ) : (
-
-          <Button variant="contained" onClick={() => handleCreateSession()}>Create Session</Button>
-
+        <div
+          style={{
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Button
+            variant="contained"
+            sx={{marginBottom:"15px"}}
+            onClick={() => {
+              setEnable(true);
+              handleCreateSession();
+            }}
+          >
+            Create Session
+          </Button>
+          {enable && <CircularProgress />}
+        </div>
       )}
     </Grid>
   );

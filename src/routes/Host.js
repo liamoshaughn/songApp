@@ -1,7 +1,7 @@
 //Lists songs and playlists uploaded by user
 
-import { useEffect } from 'react';
-import { Button, Typography, Container, Grid, Box } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Button, Typography, Container, Grid, Box, CircularProgress } from '@mui/material';
 import { useStore, addToken, addUser, addSession } from '../store/store';
 
 import { login } from '../services/api';
@@ -23,6 +23,7 @@ export default function Host() {
   const store = useStore();
   const navigate = useNavigate();
   const user = store.userProfile;
+  const [logginIn, setLogin] = useState(false);
 
   const cookies = new Cookies();
 
@@ -42,7 +43,9 @@ export default function Host() {
             </Typography>
             <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
               <Typography variant="subtitle1">Current User: </Typography>
-               <Typography sx={{marginBottom:'8px'}} variant="subtitle1">{user.display_name}</Typography>
+              <Typography sx={{ marginBottom: '8px' }} variant="subtitle1">
+                {user.display_name}
+              </Typography>
               <Button
                 variant="outlined"
                 onClick={() => {
@@ -66,11 +69,7 @@ export default function Host() {
             Host Management
           </Typography>
 
-          <Grid
-            container
-
-            sx={{ width: '100%', height: '100%', justifyContent: 'center', margin: 0, padding: 0 }}
-          >
+          <Grid container sx={{ width: '100%', height: '100%', justifyContent: 'center', margin: 0, padding: 0 }}>
             <Grid
               item
               xs={5}
@@ -116,13 +115,30 @@ export default function Host() {
           </Grid>
         </div>
       ) : (
-        <div style={{ marginTop: 'auto', marginBottom: 'auto', textAlign: 'center' }}>
-          <Typography sx={{ color: theme.palette.background.paper, marginBottom: '10px' }}>
+        <div
+          style={{
+            marginTop: 'auto',
+            marginBottom: 'auto',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography sx={{ color: theme.palette.background.paper, marginBottom: '15px' }}>
             Connect a Spotify account to begin
           </Typography>
-          <Button variant="contained" onClick={login}>
+          <Button
+            variant="contained"
+            sx={{ marginBottom: '10px' }}
+            onClick={() => {
+              setLogin(true);
+              login();
+            }}
+          >
             Login with Spotify
           </Button>
+          {logginIn && <CircularProgress />}
         </div>
       )}
     </Container>

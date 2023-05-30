@@ -54,25 +54,32 @@ export default function SongTileHost({ song, reset, names, removeSong }) {
       xs={12}
       sx={{ maxWidth: '400px !important', marginTop: '33px !important', padding: '0px !important', height: 'auto' }}
     >
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center',  textAlign:'center' }}>
-        <Button
-          variant="outlined"
-          onClick={() => removeSong()}
-          sx={{
-            boxShadow: 3,
-            borderRadius: '4px',
-            display: 'flex',
-            alignItems: 'center',
-            width: '15%',
-            height: '30px',
-          
-          }}
-        >
-          Deny
-        </Button>
-        <Typography sx={{marginLeft:"5%" }}>Requested by: {names.slice(0, 2).map(name => name.length > 9 ? name.slice(0, 9) + '...' : name).join(', ')}
-  {names.length > 3 && `, + ${names.length - 2} other(s)`}</Typography>
-      </div>
+      {removeSong && (
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center' }}>
+          <Button
+            variant="outlined"
+            onClick={() => removeSong()}
+            sx={{
+              boxShadow: 3,
+              borderRadius: '4px',
+              display: 'flex',
+              alignItems: 'center',
+              width: '15%',
+              height: '30px',
+            }}
+          >
+            Deny
+          </Button>
+          <Typography sx={{ marginLeft: '5%' }}>
+            Requested by:{' '}
+            {names
+              .slice(0, 2)
+              .map((name) => (name.length > 9 ? name.slice(0, 9) + '...' : name))
+              .join(', ')}
+            {names.length > 3 && `, + ${names.length - 2} other(s)`}
+          </Typography>
+        </div>
+      )}
       <Card
         sx={{
           boxShadow: 6,
