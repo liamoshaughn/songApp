@@ -125,7 +125,7 @@ function Home() {
           <form onSubmit={handleCodeSubmit}>
             <TextField
               placeholder="Enter Session Code"
-              onChange={(event) => setCode(event.target.value)}
+              onChange={(event) => setCode(event.target.value.toLowerCase())}
               variant="outlined"
               error={error}
               InputProps={{
@@ -150,7 +150,7 @@ function Home() {
             onClick={() => {
               navigate('/host');
             }}
-            sx={{ color: theme.palette.background.paper }}
+            sx={{ color: theme.palette.background.paper, fontWeight: 'bold' }}
           >
             Are you the host? Click here to start a session
           </Button>

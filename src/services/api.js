@@ -218,7 +218,7 @@ export const searchBarSong = async (data) => {
   const query = data;
 
   const response = await UserSpotifyApi.get(
-    '/search?include_external=audio&q="track:' + query + '"&type=track&limit=10&market=AU'
+    `/search?include_external=audio&q="${query}"&type=track&limit=10&market=AU`
   ).catch(function (error) {
     return error;
   });

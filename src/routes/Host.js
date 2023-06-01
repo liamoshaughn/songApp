@@ -68,7 +68,12 @@ export default function Host() {
           <Typography variant="h1" textAlign={'center'} sx={{ marginBottom: '5vh' }}>
             Host Management
           </Typography>
-
+          <Typography textAlign={'center'} sx={{ marginBottom: '8px' }} variant="subtitle1">
+                Create a session below, give the 2 word code to your friends and start accepting songs by adding to the queue!
+          </Typography>
+          <Typography textAlign={'center'} sx={{ marginBottom: '8px' }} variant="subtitle1">
+                Search for your own songs by using the search bar below
+          </Typography>
           <Grid container sx={{ width: '100%', height: '100%', justifyContent: 'center', margin: 0, padding: 0 }}>
             <Grid
               item
