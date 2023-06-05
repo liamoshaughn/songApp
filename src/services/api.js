@@ -18,7 +18,7 @@ const UserSpotifyApi = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-})
+});
 
 // Add request interceptor
 HostSpotifyApi.interceptors.request.use(
@@ -111,7 +111,10 @@ export const callback = async () => {
       console.log(json);
       cookies.set('access_token', json.access_token, { path: '/' });
       localStorage.setItem('refresh_token', json.refresh_token);
-      window.location.href = '/host';
+      document.addEventListener('DOMContentLoaded', function (event) {
+        window.location.href = '/host';
+        return false;
+      });
     })
     .catch((error) => {
       console.error(error);
@@ -161,7 +164,9 @@ export const getUser = async () => {
 };
 
 export const getUserPlaylists = async (data, offset) => {
-  const response = await HostSpotifyApi.get(`/users/${data}/playlists?limit=49&offset=${offset}`).catch(function (error) {
+  const response = await HostSpotifyApi.get(`/users/${data}/playlists?limit=49&offset=${offset}`).catch(function (
+    error
+  ) {
     return error;
   });
 

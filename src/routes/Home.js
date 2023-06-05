@@ -116,16 +116,17 @@ function Home() {
           <Typography sx={{marginTop:'10px'}} variant="subtitle1">Current Session: {code}</Typography>
         </>
       ) : null}
-      <Typography variant="h1">Request songs</Typography>
+      <Typography variant="h1">Song Requests</Typography>
       {phase === 1 && (
         <animated.div style={{ ...FadeCodeAnimation }}>
-          <Typography sx={{ color: theme.palette.background.paper, marginTop: '9px', marginBottom: '9px' }}>
+          <Typography variant="h1" sx={{ marginTop: '9px', marginBottom: '9px' }}>
             Enter Session Code
           </Typography>
           <form onSubmit={handleCodeSubmit}>
             <TextField
               placeholder="Enter Session Code"
               onChange={(event) => setCode(event.target.value.toLowerCase())}
+              onBlur={(event)=>handleCodeSubmit(event)}
               variant="outlined"
               error={error}
               InputProps={{
@@ -147,10 +148,11 @@ function Home() {
             />
           </form>
           <Button
+            variant="outlined"
             onClick={() => {
               navigate('/host');
             }}
-            sx={{ color: theme.palette.background.paper, fontWeight: 'bold' }}
+            sx={{ color: theme.palette.background.paper, borderColor: theme.palette.background.paper,fontWeight: 'bold', marginTop: '30px' }}
           >
             Are you the host? Click here to start a session
           </Button>
@@ -158,14 +160,15 @@ function Home() {
       )}
       {phase === 2 && (
         <animated.div style={{ ...FadeNameAnimation }}>
-          <Typography sx={{ color: theme.palette.background.paper, marginTop: '9px', marginBottom: '9px' }}>
-            Enter your name to begin
+          <Typography variant="h1" sx={{  marginTop: '9px', marginBottom: '9px' }}>
+            Enter your name
           </Typography>
           <form onSubmit={handleNameSubmit}>
             <TextField
               placeholder="Enter your name"
               variant="outlined"
               onChange={(event) => setName(event.target.value)}
+              onBlur={(event)=>handleNameSubmit(event)}
               InputProps={{
                 endAdornment: (
                   <IconButton type="submit" onClick={handleNameSubmit} disabled={name.trim() === ''}>

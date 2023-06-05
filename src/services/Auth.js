@@ -18,12 +18,13 @@ export default function Auth() {
 
   const location = useLocation();
   useEffect(() => {
-    if (location.pathname == '/auth/callback') {
-      callback();
-    }
     addToken(cookies.get('access_token'));
     getUserProfile(cookies.get('access_token'));
     addSession(cookies.get('current_session'))
+    if (location.pathname == '/auth/callback') {
+      callback();
+    }
+
   }, []);
   return (
     <Container maxWidth="100%" sx={{ borderBottom: 1, height: '60px', display: 'flex', alignItems: 'center' }}>
