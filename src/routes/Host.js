@@ -11,6 +11,7 @@ import { useTheme } from '@mui/material/styles';
 import Cookies from 'universal-cookie';
 import { getUser } from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import SpotifyButton from '../components/SpotifyButton';
 
 export default function Host() {
   const theme = useTheme();
@@ -21,10 +22,8 @@ export default function Host() {
 
   const cookies = new Cookies();
   async function getUserProfile() {
-
-      const request = await getUser();
-      addUser(request);
-
+    const request = await getUser();
+    addUser(request);
   }
 
   useEffect(() => {
@@ -33,8 +32,7 @@ export default function Host() {
   }, []);
 
   useEffect(() => {
-
-if ((store.accessToken ?? '') !== '' && store.accessToken.length >= 10) {
+    if ((store.accessToken ?? '') !== '' && store.accessToken.length >= 10) {
       getUserProfile();
     }
   }, [store.accessToken]);
@@ -71,9 +69,10 @@ if ((store.accessToken ?? '') !== '' && store.accessToken.length >= 10) {
             </div>
           </div>
 
-          <Typography variant="h1" textAlign={'center'} sx={{ marginBottom: '5vh' }}>
+          <Typography variant="h1" textAlign={'center'} sx={{ marginBottom: '3vh' }}>
             Host Management
           </Typography>
+                <SpotifyButton/>
           <Grid container sx={{ width: '100%', height: '100%', justifyContent: 'center', margin: 0, padding: 0 }}>
             <Grid
               item

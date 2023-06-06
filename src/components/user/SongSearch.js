@@ -5,6 +5,7 @@ import { useTransition, animated } from 'react-spring';
 import { searchBarSong } from '../../services/api';
 import { useStore } from '../../store/store';
 import SongTile from './SongTile';
+import SpotifyButton from '../SpotifyButton';
 
 export default function SongSearch(props) {
   const store = useStore();
@@ -35,7 +36,6 @@ export default function SongSearch(props) {
   }
 
   const handleSubmit = (event) => {
-
     event.preventDefault();
     searchSong(search);
   };
@@ -51,6 +51,9 @@ export default function SongSearch(props) {
   return (
     <Grid container spacing={2} sx={{ margin: 0, maxWidth: '500px !important' }}>
       <Grid item xs={12} sx={{ paddingLeft: '0 !important' }}>
+        <SpotifyButton />
+      </Grid>
+      <Grid item xs={12} sx={{ paddingLeft: '0 !important' }}>
         <form onSubmit={handleSubmit}>
           <TextField
             sx={{ backgroundColor: theme.palette.secondary.main, borderRadius: '4px' }}
@@ -58,7 +61,7 @@ export default function SongSearch(props) {
             value={search}
             placeholder="Search for a song"
             onChange={handleSearchChange}
-            onBlur={(event)=>handleSubmit(event)}
+            onBlur={(event) => handleSubmit(event)}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
