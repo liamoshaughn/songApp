@@ -45,10 +45,10 @@ const RequestSongDisplay = () => {
 
     const sessionsRef = doc(db, "sessions", session);
     const sessionSnapshot = await getDoc(sessionsRef);
-    console.log(sessionSnapshot.exists());
+    // console.log(sessionSnapshot.exists());
     if (sessionSnapshot.exists()) {
       const unsub = onSnapshot(doc(db, 'sessions', session), (doc) => {
-        console.log('Current data: ', doc.data().requested);
+        // console.log('Current data: ', doc.data().requested);
         var resultsArray = [];
         try {
           Object.keys(doc.data().requested).forEach(function (key, index) {
@@ -62,7 +62,6 @@ const RequestSongDisplay = () => {
         }
       });
     } else {
-      console.log('trigger');
       setSession('');
       addSession('');
       cookies.remove('current_session');
@@ -112,6 +111,12 @@ const RequestSongDisplay = () => {
             Create Session
           </Button>
           {enable && <CircularProgress />}
+                    <Typography textAlign={'center'} sx={{ color:theme.typography.body1, marginBottom: '8px' }} variant="subtitle1">
+            Give the 2 word code to your friends and start accepting songs
+          </Typography>
+          <Typography textAlign={'center'} sx={{ color:theme.typography.body1, marginBottom: '8px' }} variant="subtitle1">
+            Search for your own songs by using the search below
+          </Typography>
         </div>
       )}
     </Grid>

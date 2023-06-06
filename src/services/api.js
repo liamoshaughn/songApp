@@ -5,6 +5,8 @@ import { fc } from '../firebase/firebase';
 import { httpsCallable } from 'firebase/functions';
 
 const cookies = new Cookies();
+let callbackCalled = false;
+const options = { sameSite: 'lax', path: '/' };
 // Create an Axios instance
 const HostSpotifyApi = axios.create({
   baseURL: 'https://api.spotify.com/v1',
@@ -23,8 +25,8 @@ const UserSpotifyApi = axios.create({
 // Add request interceptor
 HostSpotifyApi.interceptors.request.use(
   (config) => {
-    const accessToken = cookies.get('access_token');
-    if (accessToken) {
+    const accessToken = localStorage.getItem('access_token');
+    if (accessToken) {  
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
@@ -34,7 +36,7 @@ HostSpotifyApi.interceptors.request.use(
 
 UserSpotifyApi.interceptors.request.use(
   (config) => {
-    const accessToken = cookies.get('access_token');
+    const accessToken = localStorage.getItem('access_token');
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -56,13 +58,13 @@ UserSpotifyApi.interceptors.response.use(
         const newAccessToken = await getClientAuth();
 
         // Update the access token and retry the original request
-        cookies.set('access_token', newAccessToken, { path: '/' });
+         localStorage.setItem('access_token', newAccessToken);
         const newRequest = { ...originalRequest };
         newRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return UserSpotifyApi(newRequest);
       } catch (error) {
         // Handle error
-        console.log(error);
+
         return Promise.reject(error);
       }
     }
@@ -84,7 +86,7 @@ HostSpotifyApi.interceptors.response.use(
         const newAccessToken = await refreshSpotifyAccess(refreshToken);
 
         // Update the access token and retry the original request
-        cookies.set('access_token', newAccessToken, { path: '/' });
+         localStorage.setItem('access_token', newAccessToken);
         const newRequest = { ...originalRequest };
         newRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return HostSpotifyApi(newRequest);
@@ -100,21 +102,19 @@ HostSpotifyApi.interceptors.response.use(
 );
 
 export const callback = async () => {
-  console.log('Calling callback');
+  if (callbackCalled) {
+    return;
+  }
+  callbackCalled = true;
   const queryParameters = new URLSearchParams(window.location.search);
   const code = queryParameters.get('code');
   const spotifyCallback = httpsCallable(fc, 'spotifyCallback');
   spotifyCallback({ code: code })
     .then((result) => {
-      console.log(result.data);
       const json = result.data;
-      console.log(json);
-      cookies.set('access_token', json.access_token, { path: '/' });
+       localStorage.setItem('access_token', json.access_token);
       localStorage.setItem('refresh_token', json.refresh_token);
-      document.addEventListener('DOMContentLoaded', function (event) {
-        window.location.href = '/host';
-        return false;
-      });
+      window.location.href = '/host';
     })
     .catch((error) => {
       console.error(error);
@@ -125,7 +125,6 @@ export const login = async () => {
   const spotifyLogin = httpsCallable(fc, 'spotifyLogin');
   spotifyLogin()
     .then((result) => {
-      console.log(result.data);
       window.location.href = result.data;
     })
     .catch((error) => {
@@ -157,10 +156,15 @@ export const refreshSpotifyAccess = async (refreshToken) => {
 };
 
 export const getUser = async () => {
-  const response = await HostSpotifyApi.get('/me').catch(function (error) {
-    return error;
-  });
-  return response.data;
+  
+  const accessToken = localStorage.getItem('access_token');
+  if ((accessToken ?? '') !== '' && accessToken.length >= 10) {
+    const response = await HostSpotifyApi.get('/me').catch(function (error) {
+      console.log(error)
+      return error;
+    });
+    return response.data;
+  }
 };
 
 export const getUserPlaylists = async (data, offset) => {
@@ -261,7 +265,6 @@ export const sendMessage = async ({ message, name, session }) => {
   const sendMessageFirestore = httpsCallable(fc, 'addRequest');
   return await sendMessageFirestore({ trackID: message, name: name, session: session })
     .then((result) => {
-      console.log(result.data);
       return result.data.access_token;
     })
     .catch((error) => {
@@ -281,7 +284,6 @@ export const getClientAuth = async () => {
   const spotifyLogin = httpsCallable(fc, 'clientAuth');
   return spotifyLogin()
     .then((result) => {
-      console.log(result.data);
       return result.data.access_token;
     })
     .catch((error) => {

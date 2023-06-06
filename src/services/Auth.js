@@ -1,10 +1,11 @@
-import React, {  useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { useLocation } from 'react-router-dom';
 import { Container, Typography } from '@mui/material';
 import Cookies from 'universal-cookie';
 import { addToken, addUser, addSession } from '../store/store';
 import { callback, getUser } from '../services/api';
+import { useStore } from '../store/store';
 
 async function getUserProfile(token) {
   const request = await getUser(token);
@@ -14,16 +15,16 @@ async function getUserProfile(token) {
 
 export default function Auth() {
   const cookies = new Cookies();
+  const store = useStore();
 
-
-  const location = useLocation();
+ 
   useEffect(() => {
-    addToken(cookies.get('access_token'));
-    getUserProfile(cookies.get('access_token'));
-    addSession(cookies.get('current_session'))
-    if (location.pathname == '/auth/callback') {
-      callback();
+    if (localStorage.getItem('access_token')) {
+      addToken(localStorage.getItem('access_token'));
+      getUserProfile(localStorage.getItem('access_token'));
     }
+    addSession(cookies.get('current_session'));
+
 
   }, []);
   return (

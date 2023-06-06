@@ -12,12 +12,6 @@ import Cookies from 'universal-cookie';
 import { getUser } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
-async function getUserProfile(token) {
-  const request = await getUser(token);
-
-  addUser(request);
-}
-
 export default function Host() {
   const theme = useTheme();
   const store = useStore();
@@ -26,12 +20,24 @@ export default function Host() {
   const [logginIn, setLogin] = useState(false);
 
   const cookies = new Cookies();
+  async function getUserProfile() {
+
+      const request = await getUser();
+      addUser(request);
+
+  }
 
   useEffect(() => {
-    addToken(cookies.get('access_token'));
-    getUserProfile(cookies.get('access_token'));
+    addToken(localStorage.getItem('access_token'));
     addSession(cookies.get('current_session'));
   }, []);
+
+  useEffect(() => {
+
+if ((store.accessToken ?? '') !== '' && store.accessToken.length >= 10) {
+      getUserProfile();
+    }
+  }, [store.accessToken]);
 
   return (
     <Container sx={{ height: '100vh', display: 'flex', flexFlow: 'column', alignItems: 'center' }} maxWidth="xl">
@@ -67,12 +73,6 @@ export default function Host() {
 
           <Typography variant="h1" textAlign={'center'} sx={{ marginBottom: '5vh' }}>
             Host Management
-          </Typography>
-          <Typography textAlign={'center'} sx={{ marginBottom: '8px' }} variant="subtitle1">
-                Create a session below, give the 2 word code to your friends and start accepting songs by adding to the queue!
-          </Typography>
-          <Typography textAlign={'center'} sx={{ marginBottom: '8px' }} variant="subtitle1">
-                Search for your own songs by using the search bar below
           </Typography>
           <Grid container sx={{ width: '100%', height: '100%', justifyContent: 'center', margin: 0, padding: 0 }}>
             <Grid
@@ -130,9 +130,6 @@ export default function Host() {
             alignItems: 'center',
           }}
         >
-          <Typography sx={{ color: theme.palette.background.paper, marginBottom: '15px' }}>
-            Connect a Spotify account to begin
-          </Typography>
           <Button
             variant="contained"
             sx={{ marginBottom: '10px' }}

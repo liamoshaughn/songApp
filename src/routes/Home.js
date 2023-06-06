@@ -23,7 +23,7 @@ function Home() {
 
   async function getToken() {
     const token = await getClientAuth();
-    cookies.set('access_token', token, { path: '/' });
+     localStorage.setItem('access_token', token);
     return token;
   }
 
