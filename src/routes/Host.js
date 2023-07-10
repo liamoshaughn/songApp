@@ -38,7 +38,7 @@ export default function Host() {
   }, [store.accessToken]);
 
   return (
-    <Container sx={{ height: '100vh', display: 'flex', flexFlow: 'column', alignItems: 'center' }} maxWidth="xl">
+    <Container sx={{height: '93vh',display: 'flex', flexFlow: 'column', alignItems: 'center' }} maxWidth="xl">
       {user ? (
         <div style={{ width: '100%' }}>
           <div style={{ display: 'flex' }}>
@@ -53,12 +53,8 @@ export default function Host() {
               <Button
                 variant="outlined"
                 onClick={() => {
-                  const cookieKeys = Object.keys(cookies.getAll());
-
-                  cookieKeys.forEach((cookieKey) => {
-                    cookies.remove(cookieKey);
-                  });
                   localStorage.removeItem('refresh_token');
+                  localStorage.removeItem('access_token');
                   navigate('/');
                   window.location.reload();
                 }}
@@ -72,8 +68,20 @@ export default function Host() {
           <Typography variant="h1" textAlign={'center'} sx={{ marginBottom: '3vh' }}>
             Host Management
           </Typography>
-                <SpotifyButton/>
-          <Grid container sx={{ width: '100%', height: '100%', justifyContent: 'center', margin: 0, padding: 0 }}>
+          <SpotifyButton />
+          <Grid
+            container
+            sx={{
+              width: '100%',
+              minHeight: '650',
+              justifyContent: 'center',
+              margin: 0,
+              padding: 0,
+              [theme.breakpoints.down('md')]: {
+                minHeight: '1390px',
+              },
+            }}
+          >
             <Grid
               item
               xs={5}

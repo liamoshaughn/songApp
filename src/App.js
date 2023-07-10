@@ -9,6 +9,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import themeSettings from './theme/theme';
 import { useSettings } from './store/store';
 import { callback } from './services/api';
+import Footer from './components/Footer';
+import { Box } from '@mui/material';
 
 const queryClient = new QueryClient();
 function App() {
@@ -25,11 +27,14 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/host" element={<Host />} />
-          <Route path="/auth/callback" element={<Auth />} />
-        </Routes>
+        <Box sx={{ minHeight: '93vh' }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/host" element={<Host />} />
+            <Route path="/auth/callback" element={<Auth />} />
+          </Routes>
+        </Box>
+        <Footer />
       </ThemeProvider>
     </QueryClientProvider>
   );
