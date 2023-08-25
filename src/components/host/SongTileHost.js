@@ -8,8 +8,6 @@ export default function SongTileHost({ song, reset, names, removeSong }) {
   const addQueue = useQueueMutation();
   const theme = useTheme();
 
-  console.log(song.name == "Test & Recognise - Flume Re-work" ? addQueue : null);
-
   const [SendAnimation, SendAnimationTrigger] = useSpring(() => ({
     left: '87%',
     config: { tension: 300, mass: 1, friction: 50 },

@@ -113,7 +113,7 @@ function Home() {
           >
             restart
           </Button>
-          <Typography sx={{marginTop:'10px'}} variant="subtitle1">Current Session: {code}</Typography>
+          <Typography sx={{marginTop:'35px'}} variant="subtitle1">Current Session: {code}</Typography>
         </>
       ) : null}
       <Typography variant="h1">Song Requests</Typography>
