@@ -36,9 +36,8 @@ export default function Host() {
       getUserProfile();
     }
   }, [store.accessToken]);
-
   return (
-    <Container sx={{height: '93vh',display: 'flex', flexFlow: 'column', alignItems: 'center' }} maxWidth="xl">
+    <Box sx={{display: 'flex', flexFlow: 'column', alignItems: 'center', paddingBottom:"5vh", height:'fit-content', padding: "10px" }} maxWidth="xl">
       {user ? (
         <div style={{ width: '100%' }}>
           <div style={{ display: 'flex' }}>
@@ -76,6 +75,7 @@ export default function Host() {
               minHeight: '650',
               justifyContent: 'center',
               margin: 0,
+              
               padding: 0,
               [theme.breakpoints.down('md')]: {
                 minHeight: '1390px',
@@ -150,6 +150,6 @@ export default function Host() {
           {logginIn && <CircularProgress />}
         </div>
       )}
-    </Container>
+    </Box>
   );
 }

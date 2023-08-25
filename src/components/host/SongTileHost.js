@@ -8,45 +8,37 @@ export default function SongTileHost({ song, reset, names, removeSong }) {
   const addQueue = useQueueMutation();
   const theme = useTheme();
 
+  console.log(song.name == "Test & Recognise - Flume Re-work" ? addQueue : null);
+
   const [SendAnimation, SendAnimationTrigger] = useSpring(() => ({
-    from: {
-      left: '87%',
-    },
+    left: '87%',
     config: { tension: 300, mass: 1, friction: 50 },
-    // Reset the mutation when the animation is complete
   }));
 
   function handleSend() {
     addQueue.mutate(song.uri);
     SendAnimationTrigger.start({
-      from: {
-        left: '87%',
-      },
-      to: {
-        left: '0%',
-      },
+      to: { left: '0%' },
     });
   }
 
   useEffect(() => {
+    const animation = SendAnimationTrigger.start({
+      to: { left: '87%' },
+      delay: 1000,
+    });
     if (addQueue.isError) {
-      SendAnimationTrigger.start({
-        from: {
-          left: '0%',
-        },
-        to: {
-          left: '87%',
-        },
-        delay: 1000,
-      });
+      
+      animation.reverse(); // Reverse the animation after it completes
     }
     if (addQueue.isSuccess) {
       setTimeout(() => {
+        addQueue.reset();
         if (removeSong) removeSong(song);
         else reset();
       }, 1500);
     }
-  }, [addQueue]);
+  }, [addQueue.isError, addQueue.isSuccess]);
 
   return (
     <Grid

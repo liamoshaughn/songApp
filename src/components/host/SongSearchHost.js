@@ -17,6 +17,9 @@ export default function SongSearchHost({ addTracks }) {
     const response = await searchBarSong(song);
     setRows(response.tracks.items);
   }
+  const reset= () =>{
+    setRows([])
+  }
 
   return (
     <Grid container spacing={2} sx={{margin:0, width:'100%', justifyContent:"center"}}>
@@ -33,7 +36,7 @@ export default function SongSearchHost({ addTracks }) {
         ></TextField>
       </Grid>
       {rows.map((song, key) => {
-        return <SongTileHost key={key} song={song} addTracks={addTracks} />;
+        return <SongTileHost key={key} song={song} addTracks={addTracks} reset={reset} />;
       })}
     </Grid>
   );

@@ -53,3 +53,4 @@ Thumbs.db
 
 #build files
 build/
+package-lock.json

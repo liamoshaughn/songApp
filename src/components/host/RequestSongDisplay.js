@@ -28,6 +28,8 @@ const RequestSongDisplay = () => {
     const messageRef = doc(db, 'sessions', session);
     const trackId = messages[index].track.id;
 
+    
+
     if (!trackId) {
       console.error('Error: trackId is undefined or empty');
       return;
@@ -42,7 +44,7 @@ const RequestSongDisplay = () => {
   };
 
   async function checkSession() {
-
+    if(!session){return}
     const sessionsRef = doc(db, "sessions", session);
     const sessionSnapshot = await getDoc(sessionsRef);
     // console.log(sessionSnapshot.exists());
@@ -76,7 +78,7 @@ const RequestSongDisplay = () => {
     <Grid
       container
       spacing={0}
-      sx={{ padding: 0, justifyContent: 'center', textAlign: 'center', margin: 0, width: '100%', padding: '10px' }}
+      sx={{ padding: 0, justifyContent: 'center', textAlign: 'center', margin: 0, width: '100%' }}
     >
       {session !== '' && session !== undefined ? (
         <>
